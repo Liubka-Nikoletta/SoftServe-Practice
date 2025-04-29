@@ -2,6 +2,7 @@ import './App.css'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from "./components/Header/Header.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 import Button from './components/Button/Button.jsx';
 import Favorites from "./components/Pages/Favorites.jsx";
 function App() {
@@ -27,6 +28,7 @@ function App() {
                         <Route path="/favorites" element={<Favorites/>}/>
                     </Routes>
                 </main>
+                <Footer />
             </div>
         </Router>
     )
