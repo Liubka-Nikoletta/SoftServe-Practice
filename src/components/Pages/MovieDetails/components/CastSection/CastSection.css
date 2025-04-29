@@ -1,0 +1,19 @@
+.cast-section {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.cast-section .section-title {
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  color: #8b2635;
+}
+
+.cast-list-flex {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  justify-content: space-between;
+}

@@ -1,0 +1,29 @@
+.cast-member-card {
+  max-width: 198px;
+  text-align: left;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.cast-member-card:hover {
+  transform: translateY(-3px);
+}
+
+.cast-member-photo {
+  max-width: 136px;
+  height: 136px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.cast-member-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #8b2635;
+}
+
+.cast-member-character {
+  font-weight: bold;
+  color: gray;
+}
