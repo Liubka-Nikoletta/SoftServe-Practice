@@ -11,7 +11,7 @@
       "Кримінал",
       "Трилер"
     ],
-    "release_year": 2025,
+    "release_date": "25.04.2025", 
     "duration": "1:45",
     "trailer_url": "https://youtu.be/HAQfDRvrU0s",
     "actors": [
@@ -36,7 +36,7 @@
       "Бойовик",
       "Романтика"
     ],
-    "release_year": 2025,
+    "release_year": 2025,(23 квітня) 
     "duration": "1:43",
     "trailer_url": "https://youtu.be/UiqCK8pDdLQ",
     "actors": [
@@ -61,7 +61,7 @@
       "Трилер",
       "Драма"
     ],
-    "release_year": 2025,
+    "release_date": "10.04.2025", 
     "duration": "1:48",
     "trailer_url": "https://youtu.be/ibk3kGZnr8w",
     "actors": [
@@ -87,7 +87,7 @@
       "Драми",
       "Фантастика"
     ],
-    "release_year": 2025,
+    "release_date": "14.03.2025", 
     "duration": "2:08",
     "trailer_url": "https://youtu.be/KpN98z8Kf5E",
     "actors": [
@@ -112,7 +112,7 @@
       "бойовик",
       "Пригоди"
     ],
-    "release_year": 2025,
+    "release_date": "13.01.2025", 
     "duration": "1:58",
     "trailer_url": "https://youtu.be/1pHDWnXmK7Y",
     "actors": [
@@ -137,7 +137,7 @@
       "Трилер",
       "Романтика"
     ],
-    "release_year": 2025,
+    "release_date": "31.12.2025", 
     "duration": "1:37",
     "trailer_url": "https://youtu.be/Qr_kX0D3DNA",
     "actors": [
@@ -162,7 +162,7 @@
       "Мелодрама",
       "Романтика"
     ],
-    "release_year": 2025,
+    "release_year": 2025 (13 лютого), 
     "duration": "1:33",
     "trailer_url": "https://youtu.be/WbwU5K-yfBI",
     "actors": [
@@ -189,7 +189,7 @@
       "Триллер",
       "Пригоди"
     ],
-    "release_year": 2025,
+    "release_date": "07.03.2025", 
     "duration": "1:58",
     "trailer_url": "https://youtu.be/tA1s65o_kYM",
     "actors": [
@@ -215,7 +215,7 @@
       "Фентезі",
       "Фантастика"
     ],
-    "release_year": 2025,
+    "release_date": "01.05.2025", 
     "duration": "2:06",
     "trailer_url": "https://youtu.be/d_TjT4Kwm4M",
     "actors": [
@@ -239,7 +239,7 @@
     "genre": [
       "Комедія"
     ],
-    "release_year": 2025,
+    "release_date": "01.05.2025", 
     "duration": "2:01",
     "trailer_url": "https://youtu.be/EzIybcx1XF0",
     "actors": [
@@ -265,7 +265,7 @@
       "Драма",
       "Кримінальний"
     ],
-    "release_year": 2025,
+    "release_date": "24.04.2025", 
     "duration": "2:05",
     "trailer_url": "https://youtu.be/Pd6y5HU22ok",
     "actors": [
@@ -288,7 +288,7 @@
       "Фентезі",
       "Комедія"
     ],
-    "release_year": 2025,
+    "release_date": "01.05.2025", 
     "duration": "1:26",
     "trailer_url": "https://youtu.be/QaHQrxqz3TE",
     "actors": [
@@ -315,7 +315,7 @@
       "Кримінальний",
       "Комедія"
     ],
-    "release_year": 2025,
+    "release_date": "02.05.2025", 
     "duration": "1:36",
     "trailer_url": "https://youtu.be/37sdo_ZcTN8",
     "actors": [
@@ -339,7 +339,7 @@
       "Триллер",
       "Психологічний"
     ],
-    "release_year": 2024,
+    "release_date": "29.04.2025", 
     "duration": "1:43",
     "trailer_url": "https://youtu.be/8oHfsdy8Xew",
     "actors": [
@@ -363,7 +363,7 @@
       "Детектив",
       "Кримінальний"
     ],
-    "release_year": 2024,
+    "release_date": "01.05.2025", 
     "duration": "1:52",
     "trailer_url": "https://youtu.be/JpjQjmrzfhE",
     "actors": [
@@ -388,7 +388,7 @@
       "Фентезі",
       "Романтика"
     ],
-    "release_year": 2024,
+    "release_date": "30.04.2025", 
     "duration": "1:30",
     "trailer_url": "https://youtu.be/mFsXdeTw1Rw",
     "actors": [
@@ -411,7 +411,7 @@
       "Жахи",
       "Триллер"
     ],
-    "release_year": 2025,
+    "release_date": "29.04.2025", 
     "duration": "1:50",
     "trailer_url": "https://youtu.be/SMNDZJQiZCI",
     "actors": [
@@ -436,7 +436,7 @@
       "Фантастика",
       "Романтика"
     ],
-    "release_year": 2024,
+    "release_date": "20.04.2025", 
     "duration": "1:53",
     "trailer_url": "https://youtu.be/sN6qS4DoU0o",
     "actors": [
@@ -460,7 +460,7 @@
       "Триллер",
       "Жахи"
     ],
-    "release_year": 2024,
+    "release_date": "25.04.2025", 
     "duration": "1:42",
     "trailer_url": "https://youtu.be/NgzAFEbjHyg",
     "actors": [
@@ -484,7 +484,7 @@
       "Жахи",
       "Психологія"
     ],
-    "release_year": 2025,
+    "release_date": "20.04.2025", 
     "duration": "2:00",
     "trailer_url": "https://youtu.be/_aFdssOYyDs",
     "actors": [
@@ -507,7 +507,7 @@
       "Комедія",
       "Романтика"
     ],
-    "release_year": 2024,
+    "release_date": "18.04.2025", 
     "duration": "1:24",
     "trailer_url": "https://youtu.be/9RaUq-exObI",
     "actors": [
@@ -533,7 +533,7 @@
       "Трилер",
       "Бойовик"
     ],
-    "release_year": 2025,
+    "release_date": "29.04.2025", 
     "duration": "1:43",
     "trailer_url": "https://youtu.be/aVAwjQdWdRo",
     "actors": [
@@ -558,7 +558,7 @@
       "Драма",
       "Бойовик"
     ],
-    "release_year": 2025,
+    "release_date": "15.04.2025", 
     "duration": "1:44",
     "trailer_url": "https://youtu.be/Se4Q_TzpYKw",
     "actors": [
@@ -582,7 +582,7 @@
       "Психологічний",
       "Триллер"
     ],
-    "release_year": 2025,
+    "release_date": "01.05.2025", 
     "duration": "1:45",
     "trailer_url": "https://youtu.be/c71FD6yQ-GY",
     "actors": [
@@ -606,7 +606,7 @@
       "Фантастика",
       "Пригоди"
     ],
-    "release_year": 2024,
+    "release_date": "23.04.2025", 
     "duration": "1:48",
     "trailer_url": "https://youtu.be/FylUY9sgE3c",
     "actors": [
@@ -632,7 +632,7 @@
       "Сімейний",
       "Пригоди"
     ],
-    "release_year": 2025,
+    "release_date": "07.04.2025", 
     "duration": "2:00",
     "trailer_url": "https://youtu.be/4BPyc8UI9Qg",
     "actors": [
@@ -657,7 +657,7 @@
       "Триллер",
       "Драма"
     ],
-    "release_year": 2025,
+    "release_date": "22.04.2025", 
     "duration": "2:00",
     "trailer_url": "https://youtu.be/I07NgjmlnSI",
     "actors": [
@@ -682,7 +682,7 @@
       "Бойовик",
       "Фантастика"
     ],
-    "release_year": 2025,
+    "release_date": "01.05.2025", 
     "duration": "2:00",
     "trailer_url": "https://youtu.be/ulqs40Cgm10",
     "actors": [
@@ -707,7 +707,7 @@
       "Жахи",
       "Психологічний"
     ],
-    "release_year": 2025,
+    "release_date": "18.04.2025", 
     "duration": "2:00",
     "trailer_url": "https://youtu.be/K6GagChvs0c",
     "actors": [
@@ -730,7 +730,7 @@
       "Містика",
       "Триллер"
     ],
-    "release_year": 2024,
+    "release_date": "12.04.2025", 
     "duration": "1:24",
     "trailer_url": "https://youtu.be/s-k7YaJgf8M",
     "actors": [
