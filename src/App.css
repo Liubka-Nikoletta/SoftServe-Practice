@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
 .App {
-  font-family: 'Arial', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 input[type="text"] {
@@ -16,7 +18,7 @@ input[type="text"]:focus {
   box-shadow: 0 0 10px 2px #8b2635;
 }
 
-input:hover{
+input:hover {
   box-shadow: 0 0 10px 2px #8b2635;
 }
 
@@ -35,7 +37,7 @@ input:hover{
 .main-page-fon {
   position: relative;
   height: 100vh;
-  background-image: url('/public/image.png');
+  background-image: url("/public/image.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -45,7 +47,7 @@ input:hover{
 }
 
 .main-page-fon::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -55,7 +57,7 @@ input:hover{
   z-index: 1;
 }
 
-.main-page-content{
+.main-page-content {
   display: flex;
   width: 800px;
   margin: 100px;
@@ -66,8 +68,6 @@ input:hover{
   z-index: 5;
 }
 
-h1{
+h1 {
   font-size: 70px;
 }
-
-
