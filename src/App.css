@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
 .App {
-  font-family: 'Arial', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 input[type="text"] {
@@ -16,7 +18,7 @@ input[type="text"]:focus {
   box-shadow: 0 0 10px 2px #8b2635;
 }
 
-input:hover{
+input:hover {
   box-shadow: 0 0 10px 2px #8b2635;
 }
 
@@ -31,6 +33,3 @@ input:hover{
   opacity: 0.9;
   filter: drop-shadow(0 0 5px #8b2635);
 }
-
-
-
