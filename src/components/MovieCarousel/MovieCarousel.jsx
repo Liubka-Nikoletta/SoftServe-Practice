@@ -1,15 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MovieCard from "../MovieCard/MovieCard.jsx";
 import films from '../../assets/films.json';
-import './MovieCarousel.css'
+import './MovieCarousel.css';
 
-const MovieCarousel = ({ cardsToShow, carouselTitle }) => {
+const MovieCarousel = ({ carouselTitle }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [cardsToShow, setCardsToShow] = useState(1);
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const calculateCardsToShow = () => {
+            if (containerRef.current) {
+                const containerWidth = containerRef.current.offsetWidth;
+                const cardWidth = 220; // Approximate width of one card with margin
+                const maxCards = Math.floor(containerWidth / cardWidth);
+                setCardsToShow(Math.max(1, maxCards));
+            }
+        };
+
+        calculateCardsToShow();
+        window.addEventListener('resize', calculateCardsToShow);
+        return () => window.removeEventListener('resize', calculateCardsToShow);
+    }, []);
 
     const goLeft = () => {
         setCurrentIndex((prevIndex) => {
             if (prevIndex === 0) {
-                return films.length - cardsToShow;
+                return Math.max(films.length - cardsToShow, 0);
             }
             return prevIndex - 1;
         });
@@ -27,7 +44,7 @@ const MovieCarousel = ({ cardsToShow, carouselTitle }) => {
     return (
         <div className="movie-carousel-wrapper">
             <h2 className="carousel-title">{carouselTitle}</h2>
-            <div className="movie-carousel">
+            <div className="movie-carousel" ref={containerRef}>
                 <button onClick={goLeft} className="carousel-btn left">{"<"}</button>
 
                 <div className="movie-cards-container">
