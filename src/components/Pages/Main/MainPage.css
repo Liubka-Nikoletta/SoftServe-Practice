@@ -107,4 +107,7 @@ h1{
     color: #57000d;
 }
 
-
+.main-page-btn{
+    display: flex;
+    gap: 10px;
+}

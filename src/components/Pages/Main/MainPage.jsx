@@ -22,7 +22,10 @@ const MainPage = () => {
                         Four misfits are suddenly pulled through a mysterious portal into a bizarre
                         cubic wonderland that thrives on imagination...
                     </h2>
-                    <Button text="Details" onClick={handleDetailsClick} />
+                    <div className="main-page-btn">
+                        <Button text="Details" onClick={handleDetailsClick} size="medium" />
+                        <Button icon="far fa-heart" onClick={handleDetailsClick} size="small" />
+                    </div>
                 </div>
             </div>
 
