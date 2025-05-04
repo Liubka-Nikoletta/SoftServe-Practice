@@ -24,7 +24,7 @@ const MainPage = () => {
                     </h2>
                     <div className="main-page-btn">
                         <Button text="Details" onClick={handleDetailsClick} size="medium" />
-                        <Button icon="far fa-heart" onClick={handleDetailsClick} size="small" />
+                        <Button icon="fa-regular fa-heart" size="small" onClick={handleDetailsClick}/>
                     </div>
                 </div>
             </div>

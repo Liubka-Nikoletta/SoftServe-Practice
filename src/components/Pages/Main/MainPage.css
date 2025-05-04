@@ -109,5 +109,6 @@ h1{
 
 .main-page-btn{
     display: flex;
+    align-items: center;
     gap: 10px;
 }

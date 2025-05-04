@@ -1,41 +1,46 @@
 .details-button {
-    background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
     font-size: 20px;
     letter-spacing: 1px;
-    padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    backdrop-filter: blur(4px);
     cursor: pointer;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.details-button.small {
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    font-size: 18px;
-}
-
-.details-button.medium {
-    width: 150px;
-}
-
+.details-button.medium,
 .details-button.large {
-    width: 200px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 10px 30px;
 }
 
-.details-button:hover {
+.details-button.medium:hover,
+.details-button.large:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(200, 200, 255, 0.4));
 }
 
-.details-button:active {
+.details-button.medium:active,
+.details-button.large:active {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(180, 180, 255, 0.5));
     transform: scale(0.97);
+}
+
+.details-button.small {
+    background: none;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+}
+
+.details-button.small:hover,
+.details-button.small:active {
+    transform: scale(1.05);
 }
 
 .details-button i {

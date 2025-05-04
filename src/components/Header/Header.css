@@ -1,4 +1,4 @@
-header {
+.header {
     height: 50px;
     width: 100%;
     display: flex;
@@ -24,5 +24,5 @@ header {
 .right {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
