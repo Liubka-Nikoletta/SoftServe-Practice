@@ -70,4 +70,45 @@ h1{
     font-size: 70px;
 }
 
+.about-us{
+    display: flex;
+    padding: 130px 150px 150px;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
 
+.about-us-content{
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.about-us-content h2{
+    font-size: 32px;
+    color: #4e000b;
+}
+
+.about-us-description{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.about-us-content h3{
+    font-size: 20px;
+    color: #4e000b;
+}
+
+.about-us-text{
+    font-size: 18px;
+    color: #57000d;
+}
+
+.main-page-btn{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

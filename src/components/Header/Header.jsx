@@ -1,6 +1,7 @@
 import React from 'react';
 import './Header.css';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
+import Button from '../Button/Button.jsx';
 
 const Header = () => {
     return (
@@ -11,12 +12,12 @@ const Header = () => {
             <div className="header-content right">
                 <input type="text" placeholder="Search movies..." />
                 <Link to="/favorites">
-                    <img src="/favourite.png" alt="Icon representing favorite movies" className="icon"/>
+                    <Button icon="fa-regular fa-heart" size="small" />
                 </Link>
-                <img src="/userAvatar.png" alt="User avatar icon" className="icon"/>
+                <Button icon="fa-regular fa-user" size="small" />
             </div>
         </header>
     );
-}
+};
 
 export default Header;
