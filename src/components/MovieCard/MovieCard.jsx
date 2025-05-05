@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./MovieCard.css";
 import Button from "../Button/Button";
 
-const MovieCard = ({ title, releaseDate, ageRating, posterUrl }) => {
+const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
+    console.log(`${title} liked status: ${!isLiked}`);
+  };
+
   return (
     <div className="movie-card__container">
       <div className="movie-card__poster-wrapper">
@@ -18,8 +26,16 @@ const MovieCard = ({ title, releaseDate, ageRating, posterUrl }) => {
         <p className="movie-card__release-date">{releaseDate}</p>
         <span className="movie-card__age-rating">{ageRating}</span>
         <div className="movie-card__button-wrapper">
-          <Button text="Details" />
-          <Button text="Like" />
+          
+          <Link to={`/movie/${id || 'unknown'}`} className="movie-card__link">
+            <Button text="Details" />
+          </Link>
+          <button 
+            className={`heart-button ${isLiked ? 'liked' : ''}`} 
+            onClick={handleLikeClick}
+          >
+            {isLiked ? '❤️' : '♡'}
+          </button>
         </div>
       </div>
     </div>
