@@ -1,0 +1,28 @@
+.header {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    position: absolute;
+    background: transparent;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.header-content {
+    display: flex;
+    margin: 0 20px;
+    align-items: center;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

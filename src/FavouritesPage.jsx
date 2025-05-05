@@ -45,7 +45,7 @@ const FavouritePage = () => {
                 </div>
             </div> 
             
-            {/* Filter Menu */}
+           
             <div id="categoriesMenu" className="categories-menu">
                 <div className="menu-header">
                     <span className="menu-title">Фільтрація</span>
@@ -120,7 +120,7 @@ const FavouritePage = () => {
                 </div>
             </div>
             
-            {/* Sort Menu */}
+            
             <div id="sortMenu" className="sort-menu">
                 <div className="menu-header">
                     <span className="menu-title">Сортування</span>
