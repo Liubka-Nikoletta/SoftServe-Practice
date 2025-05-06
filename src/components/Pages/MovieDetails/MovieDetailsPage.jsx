@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import MovieHero from "./components/MovieHero/MovieHero";
-import CastSection from "./components/CastSection/CastSection";
 import TrailerSection from "./components/TrailerSection/TrailerSection";
 import "./MovieDetailsPage.css";
 import bgImage from "../../../assets/image.png";
+import ActorCarousel from "./components/ActorCarousel/ActorCarousel";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -92,7 +92,7 @@ const MovieDetailsPage = () => {
         onFavoriteClick={handleFavoriteClick}
       />
       <TrailerSection videoId={movieData.trailerVideoId} />
-      <CastSection cast={movieData.cast} />
+      <ActorCarousel cast={movieData.cast} />
     </div>
   );
 };

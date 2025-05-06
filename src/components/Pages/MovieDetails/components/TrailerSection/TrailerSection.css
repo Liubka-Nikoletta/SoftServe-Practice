@@ -1,12 +1,14 @@
 .trailer-section {
   max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 0px;
   box-sizing: border-box;
 }
 
 .trailer-section .section-title {
   font-weight: bold;
+  font-size: 32px;
   margin-bottom: 25px;
   padding-bottom: 5px;
   color: #8b2635;
