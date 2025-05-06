@@ -1,6 +1,8 @@
 .trailer-section {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .trailer-section .section-title {
@@ -14,7 +16,7 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  padding-top: 500px;
+  padding-top: 56.25%;
   border-radius: 8px;
 }
 

@@ -1,12 +1,34 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+
+import { useParams } from "react-router-dom";
 import MovieHero from "./components/MovieHero/MovieHero";
 import CastSection from "./components/CastSection/CastSection";
 import TrailerSection from "./components/TrailerSection/TrailerSection";
 import "./MovieDetailsPage.css";
+import bgImage from "../../../assets/image.png";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
+  const localStorageKey = `favorite_movie_${movieId}`;
+
+  const getInitialFavoriteState = () => {
+    const storedValue = localStorage.getItem(localStorageKey);
+    return storedValue === "true";
+  };
+
+  const [isFavorite, setIsFavorite] = useState(getInitialFavoriteState);
+
+  useEffect(() => {
+    localStorage.setItem(localStorageKey, String(isFavorite));
+  }, [isFavorite, localStorageKey]);
+
+  const handleSessionsClick = () => {
+    console.log("Go to sessions for movie:", movieId);
+  };
+
+  const handleFavoriteClick = () => {
+    setIsFavorite((currentIsFavorite) => !currentIsFavorite);
+  };
 
   const movieData = {
     title: "A Minecraft Movie",
@@ -17,9 +39,9 @@ const MovieDetailsPage = () => {
     description:
       "Four misfits are suddenly pulled through a mysterious portal into a bizarre cubic wonderland that thrives on imagination. To get back home they'll have to master this world while embarking on a quest with an unexpected expert crafter.",
     buyPrice: "$32.50",
-    rating: 4,
+    rating: 4.6,
     posterUrl: "/minecraft-poster.png",
-    heroImageUrl: "/image.png",
+    heroImageUrl: bgImage,
     trailerVideoId: "8B1EtVPBSMw",
     cast: [
       {
@@ -63,7 +85,12 @@ const MovieDetailsPage = () => {
 
   return (
     <div className="movie-details-page">
-      <MovieHero movie={movieData} />
+      <MovieHero
+        movie={movieData}
+        isFavorite={isFavorite}
+        onSessionsClick={handleSessionsClick}
+        onFavoriteClick={handleFavoriteClick}
+      />
       <TrailerSection videoId={movieData.trailerVideoId} />
       <CastSection cast={movieData.cast} />
     </div>
