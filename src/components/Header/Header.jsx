@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from '../Button/Button.jsx';
 
 const Header = () => {
+    const location = useLocation();
+    const [isRedBackground, setIsRedBackground] = useState(false);
+
+    useEffect(() => {
+        if (location.pathname === '/now-playing') {
+            setIsRedBackground(true);
+        } else {
+            setIsRedBackground(false);
+        }
+    }, [location.pathname]);
+
     return (
-        <header className="header">
+        <header className={`header ${isRedBackground ? 'header--red' : ''}`}>
             <div className="header-content">
                 <p className="logo-text">Movie Theater</p>
             </div>
