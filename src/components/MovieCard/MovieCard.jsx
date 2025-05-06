@@ -30,12 +30,13 @@ const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
           <Link to={`/movie/${id || 'unknown'}`} className="movie-card__link">
             <Button text="Details" />
           </Link>
-          <button 
-            className={`heart-button ${isLiked ? 'liked' : ''}`} 
+
+          <Button 
+            icon={isLiked ? "fa-solid fa-heart" : "fa-regular fa-heart"} 
+            size="small"
             onClick={handleLikeClick}
-          >
-            {isLiked ? '❤️' : '♡'}
-          </button>
+            className={isLiked ? "liked" : ""}
+          />
         </div>
       </div>
     </div>
