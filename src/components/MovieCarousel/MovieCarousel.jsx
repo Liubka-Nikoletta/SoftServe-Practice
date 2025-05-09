@@ -1,66 +1,105 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import MovieCard from "../MovieCard/MovieCard.jsx";
-import films from '../../assets/films.json';
 import './MovieCarousel.css';
 
-const MovieCarousel = ({ carouselTitle }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [cardsToShow, setCardsToShow] = useState(1);
-    const containerRef = useRef(null);
-
-    useEffect(() => {
-        const calculateCardsToShow = () => {
-            if (containerRef.current) {
-                const containerWidth = containerRef.current.offsetWidth;
-                const cardWidth = 220; // Approximate width of one card with margin
-                const maxCards = Math.floor(containerWidth / cardWidth);
-                setCardsToShow(Math.max(1, maxCards));
-            }
-        };
-
-        calculateCardsToShow();
-        window.addEventListener('resize', calculateCardsToShow);
-        return () => window.removeEventListener('resize', calculateCardsToShow);
-    }, []);
-
+const MovieCarousel = ({ 
+    carouselId, 
+    carouselTitle, 
+    cardsToShow = 4, 
+    movieData = [], 
+    currentIndex, 
+    setCurrentIndex,
+    onSeeMoreClick 
+}) => {
+   
+    const hasValidData = Array.isArray(movieData) && movieData.length > 0;
+    const canScroll = hasValidData && movieData.length > cardsToShow;
+    
     const goLeft = () => {
-        setCurrentIndex((prevIndex) => {
-            if (prevIndex === 0) {
-                return Math.max(films.length - cardsToShow, 0);
-            }
-            return prevIndex - 1;
+        setCurrentIndex(prev => {
+            const newIndex = prev <= 0 ? Math.max(movieData.length - 1, 0) : prev - 1;
+            console.log(`${carouselTitle} - гортання вліво, новий індекс: ${newIndex}`);
+            return newIndex;
         });
     };
 
     const goRight = () => {
-        setCurrentIndex((prevIndex) => {
-            if (prevIndex >= films.length - cardsToShow) {
-                return 0;
-            }
-            return prevIndex + 1;
+        setCurrentIndex(prev => {
+            const newIndex = prev >= movieData.length - 1 ? 0 : prev + 1;
+            console.log(`${carouselTitle} - гортання вправо, новий індекс: ${newIndex}`);
+            return newIndex;
         });
+    };
+    
+    const handleSeeMoreClick = () => {
+        if (onSeeMoreClick) {
+            onSeeMoreClick(carouselId);
+        }
+    };
+    
+    const getVisibleMovies = () => {
+        if (!hasValidData) return [];
+        
+        console.log(`${carouselTitle} - ДЕБАГ: movieData.length = ${movieData.length}, currentIndex = ${currentIndex}`);
+        
+        if (movieData.length <= cardsToShow) {
+            return movieData;
+        }
+        
+      
+        let visibleMovies = [];
+        for (let i = 0; i < cardsToShow; i++) {
+            const index = (currentIndex + i) % movieData.length;
+            visibleMovies.push(movieData[index]);
+        }
+        
+        console.log(`${carouselTitle} - Вибрано ${visibleMovies.length} фільмів починаючи з ${currentIndex}`);
+        
+        return visibleMovies;
     };
 
     return (
-        <div className="movie-carousel-wrapper">
-            <h2 className="carousel-title">{carouselTitle}</h2>
-            <div className="movie-carousel" ref={containerRef}>
-                <button onClick={goLeft} className="carousel-btn left">{"<"}</button>
-
-                <div className="movie-cards-container">
-                    {films.slice(currentIndex, currentIndex + cardsToShow).map((movie) => (
-                        <MovieCard
-                            key={movie.id}
-                            title={movie.title}
-                            releaseDate={movie.release_date}
-                            ageRating={movie.age}
-                            posterUrl={movie.poster}
-                        />
-                    ))}
-                </div>
-
-                <button onClick={goRight} className="carousel-btn right">{">"}</button>
+        <div className={`movie-carousel-wrapper ${carouselId}`}>
+            <div className="carousel-header">
+                <h2 className="carousel-title">{carouselTitle}</h2>
+                <button className="see-more-button" onClick={handleSeeMoreClick}>
+                    see more <span className="see-more-arrow">→</span>
+                </button>
             </div>
+            <div className="movie-carousel">
+                <button 
+                    onClick={goLeft} 
+                    className="carousel-btn left" 
+                    style={{opacity: hasValidData ? 1 : 0.3}}
+                >
+                    {"<"}
+                </button>
+                
+                <div className="movie-cards-container">
+                    {!hasValidData ? (
+                        <p>Немає доступних фільмів</p>
+                    ) : (
+                        getVisibleMovies().map((movie, index) => (
+                            <MovieCard
+                                key={`${movie.id || carouselId}-${index}`}
+                                title={movie.title || "Назва фільму"}
+                                releaseDate={movie.release_date || "Немає дати"}
+                                ageRating={movie.age || "0+"}
+                                posterUrl={movie.poster || "placeholder.jpg"}
+                            />
+                        ))
+                    )}
+                </div>
+                
+                <button 
+                    onClick={goRight} 
+                    className="carousel-btn right" 
+                    style={{opacity: hasValidData ? 1 : 0.3}}
+                >
+                    {">"}
+                </button>
+            </div>
+            
         </div>
     );
 };
