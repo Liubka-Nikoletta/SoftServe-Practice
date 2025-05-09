@@ -7,6 +7,8 @@
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
+  padding: 20px 40px 60px 40px;
+  box-sizing: border-box;
 }
 
 .hero-backdrop {
@@ -23,11 +25,22 @@
   color: white;
   display: flex;
   align-items: flex-end;
-  gap: 20px;
+  gap: 40px;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 100px;
   z-index: 2;
+}
+
+.hero-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+}
+
+.hero-poster-content {
+  flex-shrink: 0;
 }
 
 .hero-movie-poster {
@@ -35,4 +48,106 @@
   height: auto;
   border-radius: 8px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.movie-meta {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.movie-title {
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+.movie-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.movie-description {
+  line-height: 30px;
+  font-size: 24px;
+}
+
+.movie-info-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.star-rating i {
+  margin: 0 5px;
+  font-size: 18px;
+}
+
+.movie-info-bar .details-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.movie-info-bar .details-button.small {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+
+  width: 45px;
+  height: 45px;
+  min-height: 45px;
+  padding: 0;
+  font-size: 18px;
+}
+
+.movie-info-bar .details-button.small:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(200, 200, 255, 0.4)
+  );
+  transform: none;
+}
+
+.movie-info-bar .details-button.small:active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(180, 180, 255, 0.5)
+  );
+  transform: scale(0.97);
+}
+
+.rating-star {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  margin: 0 1px;
+  position: relative;
+  color: #ffffff;
+}
+
+.fractional-star-container {
+  position: relative;
+  display: inline-block;
+}
+
+.fractional-star-container > i.far.fa-star {
+  display: block;
+}
+
+.fractional-star-container .filled-part {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+  z-index: 1;
+}
+
+.fractional-star-container .filled-part > i.fas.fa-star {
+  display: block;
 }

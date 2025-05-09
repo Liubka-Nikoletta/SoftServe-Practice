@@ -1,0 +1,58 @@
+.actor-carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin-bottom: 50px;
+}
+
+.actor-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 50px;
+}
+
+.actor-cards-container {
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 80%;
+}
+
+.carousel-btn {
+  position: absolute;
+  margin: 0 70px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: #9e1b39;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 2;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.actor-card__container {
+  margin: 0 10px;
+  flex: 0 0 auto;
+}
+
+.carousel-title {
+  font-weight: bold;
+  color: #8b2635;
+}

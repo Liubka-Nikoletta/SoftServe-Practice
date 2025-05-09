@@ -1,10 +1,14 @@
 .trailer-section {
-  max-width: 900px;
-  margin: 40px auto;
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 0px;
+  box-sizing: border-box;
 }
 
 .trailer-section .section-title {
   font-weight: bold;
+  font-size: 32px;
   margin-bottom: 25px;
   padding-bottom: 5px;
   color: #8b2635;
@@ -14,7 +18,7 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  padding-top: 500px;
+  padding-top: 56.25%;
   border-radius: 8px;
 }
 
