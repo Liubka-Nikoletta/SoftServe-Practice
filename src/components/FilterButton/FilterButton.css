@@ -1,0 +1,33 @@
+.frame-330 {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 4px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.frame-330:hover {
+  background-color: rgba(0, 0, 0, 0.18);
+}
+
+.frame-330:active {
+  background-color: rgba(0, 0, 0, 0.24);
+  transform: scale(0.95);
+}
+
+.majesticons-filter-line {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}

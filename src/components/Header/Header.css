@@ -1,24 +1,27 @@
 .header {
-    height: 50px;
-    width: 100%;
-    display: flex;
-    position: absolute;
-    background: transparent;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
+  height: 86px;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  background: transparent;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+.header--red {
+  background-color: #8b2635;
 }
 
 .header-content {
-    display: flex;
-    margin: 0 20px;
-    align-items: center;
+  display: flex;
+  margin: 0 20px;
+  align-items: center;
 }
 
 .logo-text {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
 }
 
 .logo-link {
@@ -26,9 +29,9 @@
 }
 
 .right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Додані стилі для пошуку */
