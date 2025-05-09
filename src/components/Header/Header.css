@@ -24,8 +24,58 @@
   color: #ffffff;
 }
 
+.logo-link {
+    text-decoration: none;
+}
+
 .right {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* Додані стилі для пошуку */
+.search-wrapper {
+    position: relative;
+}
+
+input[type="text"] {
+    padding: 5px 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 200px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+input[type="text"]:focus {
+    box-shadow: 0 0 10px 2px #8b2635;
+    background: rgba(255, 255, 255, 1);
+}
+
+input:hover {
+    box-shadow: 0 0 10px 2px #8b2635;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+    .search-wrapper input[type="text"] {
+        width: 150px;
+    }
+    
+    .header-content {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-wrapper input[type="text"] {
+        width: 120px;
+    }
+    
+    .logo-text {
+        font-size: 1rem;
+    }
 }

@@ -1,0 +1,75 @@
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 5px 15px rgba(139, 38, 53, 0.2);
+    z-index: 100;
+    margin-top: 5px;
+}
+
+.suggestion-item {
+    display: flex;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: rgba(139, 38, 53, 0.05);
+}
+
+.suggestion-poster {
+    width: 30px;
+    height: 45px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.suggestion-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.suggestion-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.suggestion-title {
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.suggestion-year {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Scrollbar styling */
+.search-suggestions::-webkit-scrollbar {
+    width: 5px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0 0 5px 0;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+    background: #8b2635;
+    border-radius: 10px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+    background: #9e1b39;
+}
