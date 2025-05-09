@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Button from "../../Button/Button.jsx";
 import "./MainPage.css";
-import bgImage from "../../../assets/image.png";
 import cinemaImg from "../../../assets/cinema.png";
 import MovieCarousel from "../../MovieCarousel/MovieCarousel.jsx";
+import BannerCarousel from "./BannerCarousel/BannerCarousel.jsx";
 
 const MainPage = () => {
     const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(0);
@@ -81,16 +80,7 @@ const MainPage = () => {
 
     return (
         <div className="main-page">
-            <div className="main-page-background" style={{ backgroundImage: `url(${bgImage})` }}>
-                <div className="main-page-content">
-                    <h1>A Minecraft Movie</h1>
-                    <h2>Four misfits are suddenly pulled through a mysterious portal into a bizarre cubic wonderland...</h2>
-                    <div className="main-page-btn">
-                        <Button text="Details" onClick={handleDetailsClick} size="medium" />
-                        <Button icon="fa-regular fa-heart" size="small" onClick={handleDetailsClick} />
-                    </div>
-                </div>
-            </div>
+            <BannerCarousel films={currentlyPlayingFilms} />
 
             <MovieCarousel
                 carouselId="currentlyPlaying"
