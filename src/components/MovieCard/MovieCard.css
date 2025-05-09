@@ -4,12 +4,6 @@
   overflow: hidden;
   width: 280px;
   height: 400px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.movie-card__container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(139, 38, 53, 0.2);
 }
 
 .movie-card__poster-wrapper {
@@ -55,12 +49,6 @@
 
 .movie-card__title {
   font-weight: 600;
-  margin: 0;
-}
-
-.movie-card__release-date {
-  margin: 0;
-  font-size: 16px;
 }
 
 .movie-card__age-rating {
@@ -72,10 +60,4 @@
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.movie-card__link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
 }

@@ -1,0 +1,38 @@
+.App {
+  font-family: "Work Sans", sans-serif;
+  /*background: linear-gradient(to top, #8e2938 10%, #ffffff 90%);*/
+  background: radial-gradient(100% 100% at 70% 90%, rgba(139, 38, 53, 0.7) 0%, #FFF 70%);
+}
+
+input[type="text"] {
+  padding: 5px 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  width: 200px;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  box-shadow: 0 0 10px 2px #8b2635;
+}
+
+input:hover{
+  box-shadow: 0 0 10px 2px #8b2635;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon:hover {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px #8b2635);
+}
+
+
+
