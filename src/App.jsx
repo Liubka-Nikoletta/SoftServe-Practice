@@ -5,7 +5,10 @@ import Footer from "./components/Footer/Footer.jsx";
 import Favorites from "./components/Pages/Favorites.jsx";
 import MovieDetailsPage from "./components/Pages/MovieDetails/MovieDetailsPage.jsx";
 import MainPage from "./components/Pages/Main/MainPage.jsx";
+
 import LoginPage from "./components/Pages/Login/LoginPage.jsx"; 
+import CurrentlyPlaying from "./components/Pages/CurrentlyPlayingPage/CurrentlyPlaying.jsx";
+
 import './App.css';
 
 function App() {
@@ -20,6 +23,7 @@ function App() {
                         <Route path="/movie" element={<MovieDetailsPage />} />
                         <Route path="/movie/:movieId" element={<MovieDetailsPage />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/now-playing" element={<CurrentlyPlaying />} />
                     </Routes>
                 </main>
                 <Footer />

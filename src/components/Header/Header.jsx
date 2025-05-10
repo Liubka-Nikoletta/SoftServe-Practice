@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Header.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from '../Button/Button.jsx';
 import SearchSuggestions from '../Search/SearchSuggestions';
 import UserIcon from '../UserIcon/UserIcon';
@@ -41,7 +41,17 @@ const Header = () => {
         
         setSuggestions(filteredMovies);
     }, [searchTerm, movies]);
-    
+        const location = useLocation();
+    const [isRedBackground, setIsRedBackground] = useState(false);
+
+    useEffect(() => {
+        if (location.pathname === '/now-playing') {
+            setIsRedBackground(true);
+        } else {
+            setIsRedBackground(false);
+        }
+    }, [location.pathname]);
+
     const handleInputChange = (e) => {
         setSearchTerm(e.target.value);
         setShowSuggestions(true);
@@ -87,7 +97,7 @@ const Header = () => {
     };
 
     return (
-        <header className="header">
+<header className={`header ${isRedBackground ? 'header--red' : ''}`}>
             <div className="header-content">
                 <Link to="/" className="logo-link">
                     <p className="logo-text">Movie Theater</p>
