@@ -3,6 +3,7 @@ import './Header.css';
 import { Link } from 'react-router-dom';
 import Button from '../Button/Button.jsx';
 import SearchSuggestions from '../Search/SearchSuggestions';
+import UserIcon from '../UserIcon/UserIcon';
 
 const Header = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -114,7 +115,7 @@ const Header = () => {
                 <Link to="/favorites">
                     <Button icon="fa-regular fa-heart" size="small" />
                 </Link>
-                <Button icon="fa-regular fa-user" size="small" />
+                <UserIcon /> 
             </div>
         </header>
     );
