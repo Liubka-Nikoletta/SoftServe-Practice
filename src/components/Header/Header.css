@@ -34,7 +34,6 @@
   gap: 10px;
 }
 
-/* Додані стилі для пошуку */
 .search-wrapper {
     position: relative;
 }
@@ -59,7 +58,6 @@ input:hover {
     box-shadow: 0 0 10px 2px #8b2635;
 }
 
-/* Media query for mobile responsiveness */
 @media (max-width: 768px) {
     .search-wrapper input[type="text"] {
         width: 150px;

@@ -100,6 +100,7 @@ const MainPage = () => {
                 currentIndex={comingSoonIndex}
                 setCurrentIndex={setComingSoonIndex}
                 onSeeMoreClick={handleSeeMoreClick}
+                hideSeeMoreButton={true}
             />
 
             <MovieCarousel

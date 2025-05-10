@@ -1,14 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./MovieCard.css";
 import Button from "../Button/Button";
 
 const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  
+  useEffect(() => {
+    const checkAdminStatus = () => {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      setIsAdmin(currentUser && currentUser.role === 'admin');
+    };
+    
+    checkAdminStatus();
+    
+    const handleAuthChange = () => {
+      checkAdminStatus();
+    };
+    
+    document.addEventListener('authStatusChanged', handleAuthChange);
+    
+    return () => {
+      document.removeEventListener('authStatusChanged', handleAuthChange);
+    };
+  }, []);
+  
+  useEffect(() => {
+    const favoriteKey = `favorite_movie_${id}`;
+    const isFav = localStorage.getItem(favoriteKey) === 'true';
+    setIsLiked(isFav);
+  }, [id]);
   
   const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-    console.log(`${title} liked status: ${!isLiked}`);
+    const favoriteKey = `favorite_movie_${id}`;
+    const newLikedStatus = !isLiked;
+    setIsLiked(newLikedStatus);
+    localStorage.setItem(favoriteKey, String(newLikedStatus));
+  };
+  
+  const handleEditClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(`Editing movie: ${id}`);
+  };
+  
+  const handleDeleteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
+      console.log(`Deleting movie: ${id}`);
+    }
   };
 
   return (
@@ -26,7 +68,6 @@ const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
         <p className="movie-card__release-date">{releaseDate}</p>
         <span className="movie-card__age-rating">{ageRating}</span>
         <div className="movie-card__button-wrapper">
-          
           <Link to={`/movie/${id || 'unknown'}`} className="movie-card__link">
             <Button text="Details" />
           </Link>
@@ -38,9 +79,26 @@ const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
             className={isLiked ? "liked" : ""}
           />
         </div>
+        
+        {isAdmin && (
+          <div className="admin-buttons-container">
+            <button 
+              onClick={handleEditClick} 
+              className="admin-button edit-button"
+            >
+              <i className="fa-solid fa-edit"></i> Edit
+            </button>
+            <button 
+              onClick={handleDeleteClick} 
+              className="admin-button delete-button"
+            >
+              <i className="fa-solid fa-trash"></i> Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default MovieCard;
+export default MovieCard; 

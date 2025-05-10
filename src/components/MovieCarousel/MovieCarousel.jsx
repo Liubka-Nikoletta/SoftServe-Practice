@@ -9,7 +9,8 @@ const MovieCarousel = ({
     movieData = [], 
     currentIndex, 
     setCurrentIndex,
-    onSeeMoreClick 
+    onSeeMoreClick,
+    hideSeeMoreButton = false 
 }) => {
    
     const hasValidData = Array.isArray(movieData) && movieData.length > 0;
@@ -62,9 +63,11 @@ const MovieCarousel = ({
         <div className={`movie-carousel-wrapper ${carouselId}`}>
             <div className="carousel-header">
                 <h2 className="carousel-title">{carouselTitle}</h2>
-                <button className="see-more-button" onClick={handleSeeMoreClick}>
-                    see more <span className="see-more-arrow">→</span>
-                </button>
+                {!hideSeeMoreButton && (
+                    <button className="see-more-button" onClick={handleSeeMoreClick}>
+                        see more <span className="see-more-arrow">→</span>
+                    </button>
+                )}
             </div>
             <div className="movie-carousel">
                 <button 
@@ -82,6 +85,7 @@ const MovieCarousel = ({
                         getVisibleMovies().map((movie, index) => (
                             <MovieCard
                                 key={`${movie.id || carouselId}-${index}`}
+                                id={movie.id}
                                 title={movie.title || "Назва фільму"}
                                 releaseDate={movie.release_date || "Немає дати"}
                                 ageRating={movie.age || "0+"}
