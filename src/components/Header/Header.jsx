@@ -44,7 +44,7 @@ const Header = () => {
     const [isRedBackground, setIsRedBackground] = useState(false);
 
     useEffect(() => {
-        if (location.pathname === '/now-playing') {
+        if (location.pathname === '/now-playing'|| location.pathname === '/favorites' ) {
             setIsRedBackground(true);
         } else {
             setIsRedBackground(false);
