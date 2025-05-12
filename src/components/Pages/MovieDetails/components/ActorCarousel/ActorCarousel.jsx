@@ -41,7 +41,7 @@ const ActorCarousel = ({ cast }) => {
   };
 
   return (
-    <div className="actor-carousel-wrapper">
+    <section className="actor-carousel-wrapper">
       <h2 className="carousel-title">Cast</h2>
       <div className="actor-carousel" ref={containerRef}>
         <button onClick={goLeft} className="carousel-btn left">
@@ -58,7 +58,7 @@ const ActorCarousel = ({ cast }) => {
           {">"}
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -53,6 +53,8 @@ const MovieHero = ({ movie, isFavorite, onSessionsClick, onFavoriteClick }) => {
     backgroundImage: `url(${movie.heroImageUrl})`,
   };
 
+  console.log(movie);
+
   return (
     <div className="movie-hero-section" style={heroStyle}>
       <div className="hero-backdrop"></div>
