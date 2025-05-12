@@ -77,7 +77,7 @@ const SessionForm = ({ onClose, onSubmit, mode, initialData }) => {
           />
           <FormField
             label="Time"
-            type="text"
+            type="time"
             value={time}
             onChange={(e) => setTime(e.target.value)}
             placeholder="e.g., 14:30"
