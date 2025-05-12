@@ -1,0 +1,111 @@
+.sessions-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 32.5625rem;
+  height: 100%;
+  background-color: #8b2635;
+  color: white;
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sessions-sidebar.open {
+  animation: slideIn 0.3s forwards;
+}
+
+.sessions-sidebar.close {
+  animation: slideOut 0.3s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.sessions-sidebar__header {
+  padding-top: 1.8rem;
+  padding-right: 4.06rem;
+  padding-bottom: 1.8rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: #8b2635;
+  z-index: 1001;
+}
+
+.sessions-sidebar__header .details-button {
+  border-radius: 0.3125rem;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.sessions-sidebar__header .details-button.small:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(200, 200, 255, 0.4)
+  );
+  transform: none;
+}
+
+.sessions-sidebar__header .details-button.small:active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(180, 180, 255, 0.5)
+  );
+  transform: scale(0.97);
+}
+
+.sessions-sidebar::-webkit-scrollbar {
+  width: 0.4375rem;
+}
+
+.sessions-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+}
+
+.sessions-sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #d89292;
+}
+
+.sessions-sidebar__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+  padding: 1rem 4.06rem 3rem;
+}
+
+.sessions-sidebar__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+}
+
+.sessions-sidebar__cards .details-button {
+  background-color: #8b2635;
+  font-size: 1.5rem;
+}
+
+.sessions-sidebar__admin-buttons {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}

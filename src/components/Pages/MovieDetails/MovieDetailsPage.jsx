@@ -6,6 +6,7 @@ import TrailerSection from "./components/TrailerSection/TrailerSection";
 import "./MovieDetailsPage.css";
 import bgImage from "../../../assets/image.png";
 import ActorCarousel from "./components/ActorCarousel/ActorCarousel";
+import SessionsSidebar from "./components/SessionsSidebar/SessionsSidebar";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -17,17 +18,57 @@ const MovieDetailsPage = () => {
   };
 
   const [isFavorite, setIsFavorite] = useState(getInitialFavoriteState);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [scheduleData, setScheduleData] = useState([]);
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, String(isFavorite));
   }, [isFavorite, localStorageKey]);
 
+  useEffect(() => {
+    const loadFilteredSchedule = async () => {
+      try {
+        const storedSchedule = localStorage.getItem(
+          `schedule_movie_${movieId}`
+        );
+        if (storedSchedule) {
+          setScheduleData(JSON.parse(storedSchedule));
+        } else {
+          const scheduleModule = await import("../../../assets/schedule.json");
+          const schedule = scheduleModule.default;
+
+          const filteredSchedule = schedule.filter(
+            (item) => item.film_id === movieId
+          );
+          setScheduleData(filteredSchedule);
+        }
+      } catch (error) {
+        console.error("Error loading schedule data:", error);
+      }
+    };
+
+    loadFilteredSchedule();
+  }, [movieId]);
+
   const handleSessionsClick = () => {
-    console.log("Go to sessions for movie:", movieId);
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsSidebarOpen((prevState) => !prevState);
+      setIsClosing(false);
+    }, 300);
   };
 
   const handleFavoriteClick = () => {
     setIsFavorite((currentIsFavorite) => !currentIsFavorite);
+  };
+
+  const handleScheduleUpdate = (updatedSchedule) => {
+    setScheduleData(updatedSchedule);
+    localStorage.setItem(
+      `schedule_movie_${movieId}`,
+      JSON.stringify(updatedSchedule)
+    );
   };
 
   const movieData = {
@@ -85,6 +126,13 @@ const MovieDetailsPage = () => {
 
   return (
     <div className="movie-details-page">
+      <SessionsSidebar
+        isOpen={isSidebarOpen}
+        onClose={handleSessionsClick}
+        isClosing={isClosing}
+        schedule={scheduleData}
+        onScheduleUpdate={handleScheduleUpdate}
+      />
       <MovieHero
         movie={movieData}
         isFavorite={isFavorite}
