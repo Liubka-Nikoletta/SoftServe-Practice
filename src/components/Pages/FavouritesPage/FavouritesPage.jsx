@@ -40,6 +40,7 @@ const FavouritePage = () => {
       }
     };
 
+  
     loadFavouriteMovies();
   }, []);
 

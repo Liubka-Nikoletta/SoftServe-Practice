@@ -182,7 +182,7 @@ const Sidebar = ({ isOpen, onClose, onFilterChange }) => {
                                 </div>
                                 <div className="frame-334">
                                   <div className="frame-3322" data-filter-type="date" data-filter-value="tomorrow" onClick={handleItemClick}>
-                                    <div className="fantasy">Супергейський</div>
+                                    <div className="fantasy">Супергеройський фільм</div>
                                   </div>
                                 </div>
                                 
