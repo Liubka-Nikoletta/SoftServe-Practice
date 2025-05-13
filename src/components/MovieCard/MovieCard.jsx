@@ -3,53 +3,55 @@ import { Link } from "react-router-dom";
 import "./MovieCard.css";
 import Button from "../Button/Button";
 
-const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
+const MovieCard = ({
+  id,
+  title,
+  releaseDate,
+  ageRating,
+  posterUrl,
+  onDelete,
+  onEdit,
+}) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  
+
   useEffect(() => {
     const checkAdminStatus = () => {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-      setIsAdmin(currentUser && currentUser.role === 'admin');
+      const currentUser = JSON.parse(
+        localStorage.getItem("currentUser") || "null"
+      );
+      setIsAdmin(currentUser && currentUser.role === "admin");
     };
-    
+
     checkAdminStatus();
-    
+
     const handleAuthChange = () => {
       checkAdminStatus();
     };
-    
-    document.addEventListener('authStatusChanged', handleAuthChange);
-    
+
+    document.addEventListener("authStatusChanged", handleAuthChange);
+
     return () => {
-      document.removeEventListener('authStatusChanged', handleAuthChange);
+      document.removeEventListener("authStatusChanged", handleAuthChange);
     };
   }, []);
-  
+
   useEffect(() => {
     const favoriteKey = `favorite_movie_${id}`;
-    const isFav = localStorage.getItem(favoriteKey) === 'true';
+    const isFav = localStorage.getItem(favoriteKey) === "true";
     setIsLiked(isFav);
   }, [id]);
-  
+
   const handleLikeClick = () => {
     const favoriteKey = `favorite_movie_${id}`;
     const newLikedStatus = !isLiked;
     setIsLiked(newLikedStatus);
     localStorage.setItem(favoriteKey, String(newLikedStatus));
   };
-  
-  const handleEditClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log(`Editing movie: ${id}`);
-  };
-  
-  const handleDeleteClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+
+  const confirmAndDelete = () => {
     if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
-      console.log(`Deleting movie: ${id}`);
+      onDelete(id);
     }
   };
 
@@ -68,28 +70,25 @@ const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
         <p className="movie-card__release-date">{releaseDate}</p>
         <span className="movie-card__age-rating">{ageRating}</span>
         <div className="movie-card__button-wrapper">
-          <Link to={`/movie/${id || 'unknown'}`} className="movie-card__link">
+          <Link to={`/movie/${id || "unknown"}`} className="movie-card__link">
             <Button text="Details" />
           </Link>
 
-          <Button 
-            icon={isLiked ? "fa-solid fa-heart" : "fa-regular fa-heart"} 
+          <Button
+            icon={isLiked ? "fa-solid fa-heart" : "fa-regular fa-heart"}
             size="small"
             onClick={handleLikeClick}
             className={isLiked ? "liked" : ""}
           />
         </div>
-        
+
         {isAdmin && (
           <div className="admin-buttons-container">
-            <button 
-              onClick={handleEditClick} 
-              className="admin-button edit-button"
-            >
+            <button onClick={onEdit} className="admin-button edit-button">
               <i className="fa-solid fa-edit"></i> Edit
             </button>
-            <button 
-              onClick={handleDeleteClick} 
+            <button
+              onClick={confirmAndDelete}
               className="admin-button delete-button"
             >
               <i className="fa-solid fa-trash"></i> Delete
@@ -101,4 +100,4 @@ const MovieCard = ({ id, title, releaseDate, ageRating, posterUrl }) => {
   );
 };
 
-export default MovieCard; 
+export default MovieCard;
