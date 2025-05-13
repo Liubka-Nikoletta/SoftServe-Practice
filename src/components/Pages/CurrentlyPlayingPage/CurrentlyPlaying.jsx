@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './CurrentlyPlaying.css';
+import React, { useState, useEffect } from "react";
+import "./CurrentlyPlaying.css";
 import MovieCard from "../../MovieCard/MovieCard.jsx";
 import FilterButton from "../../FilterButton/FilterButton";
 
@@ -8,22 +8,31 @@ const CurrentlyPlaying = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const handleFilterClick = () => {
-    console.log('Кнопка фільтра натиснута');
+    console.log("Кнопка фільтра натиснута");
   };
   useEffect(() => {
-    const loadCurrentlyPlayingMovies = async () => {
-      try {
-        const response = await import('../../../assets/films.json');
-        setCurrentlyPlayingFilms(response.default || []);
+    const loadData = async () => {
+      const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
+      const deletedMovies = JSON.parse(
+        localStorage.getItem("deletedMovies") || "[]"
+      );
+      setLoading(true);
+      if (storedCurrentlyPlaying) {
+        const parsed = JSON.parse(storedCurrentlyPlaying).filter(
+          (movie) => !deletedMovies.includes(movie.id)
+        );
+        setCurrentlyPlayingFilms(parsed.slice(0, 8));
         setLoading(false);
-      } catch (e) {
-        setError(e);
+      } else {
+        const films =
+          (await import("../../../assets/films.json")).default || [];
+        setCurrentlyPlayingFilms(films.slice(0, 8));
+        localStorage.setItem("currentlyPlaying", JSON.stringify(films));
         setLoading(false);
-        console.error("Помилка завантаження фільмів:", e);
       }
     };
 
-    loadCurrentlyPlayingMovies();
+    loadData();
   }, []);
 
   if (loading) {
@@ -31,17 +40,21 @@ const CurrentlyPlaying = () => {
   }
 
   if (error) {
-    return <div className="currently-playing">Помилка завантаження фільмів.</div>;
+    return (
+      <div className="currently-playing">Помилка завантаження фільмів.</div>
+    );
   }
 
   return (
     <div className="currently-playing">
-      <div className="header-with-filter"> {}
+      <div className="header-with-filter">
+        {" "}
+        {}
         <h1>Currently Playing</h1>
         <FilterButton onClick={handleFilterClick} />
       </div>
       <div className="movie-grid">
-        {currentlyPlayingFilms.map(movie => (
+        {currentlyPlayingFilms.map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
