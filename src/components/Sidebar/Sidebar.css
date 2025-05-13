@@ -1,0 +1,319 @@
+.group-18482,
+.group-18482 * {
+  box-sizing: border-box;
+}
+.group-18482 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex; 
+  flex-direction: column;
+  align-items: flex-start; 
+  gap: 30px; 
+  padding: 20px; 
+  overflow-y: auto; 
+}
+
+.rectangle-4197 {
+  display: none; 
+}
+
+.frame-332 { /* Кнопка закриття сайдбару */
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  padding: 4px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 36.67px; 
+  height: 36.67px;
+  position: absolute; 
+  right: 20px; 
+  top: 20px; 
+  left: unset; 
+  z-index: 1000; 
+}
+
+.close-sidebar-button{
+  flex-shrink: 0;
+  width: 77px;
+  height: 82px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+
+.frame-18473 {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%; 
+  height: auto; 
+  position: static; 
+  left: unset; 
+  top: unset; 
+  margin-top: 50px; 
+}
+
+/* Стилі для загальних "карток" фільтрів (Session day, Session time, Genre, Rating, Age, Sort) */
+.frame-18477,
+.frame-18478,
+.frame-18479,
+.frame-18480,
+.frame-18481,
+.frame-18482 {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 20px 40px; 
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 100%; 
+  position: relative; 
+}
+
+.session-day,
+.session-time,
+.genre,
+.rating,
+.age,
+.sort {
+  color: #ffffff;
+  text-align: left;
+  font-family: "WorkSans-Medium", sans-serif;
+  font-size: 24px;
+  line-height: 20px;
+  font-weight: 500;
+  position: relative; 
+  width: 100%; 
+}
+
+.frame-18472 { 
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap; 
+  align-content: center;
+  flex-shrink: 0;
+  width: 100%; 
+  position: relative;
+}
+
+/* Стилі для кнопок "Choose a date", "Today", "Tomorrow" та інших подібних */
+.frame-330,
+.frame-331,
+.frame-3322,
+.frame-3323,
+.frame-333,
+.frame-334,
+.frame-3316,
+.frame-3324,
+.frame-3332,
+.frame-3342,
+.frame-3317,
+.frame-3325 {
+  background: #8b2635;
+  border-radius: 8px;
+  padding: 8px 8px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 15px; 
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 45px;
+  position: relative;
+  cursor: pointer;
+
+}
+
+.choose-a-date,
+.today,
+.tomorrow,
+.action,
+.comedy,
+.documentary,
+.fantasy,
+.from-0-years-old,
+.from-12-years-old,
+.from-16-years-old,
+.from-18-years-old,
+.newest,
+.oldest {
+  color: #ffffff;
+  text-align: left;
+  font-family: "WorkSans-Regular", sans-serif;
+  font-size: 22px;
+  line-height: 24px;
+  font-weight: 400;
+  position: relative;
+  white-space: nowrap; 
+}
+
+.group-18496,
+.group-184962 {
+  flex-shrink: 0;
+  width: 100%; 
+  height: 62px;
+  position: relative; 
+}
+
+.line-2,
+.line-22 {
+  width: calc(100% - 40px); 
+  height: 1px;
+  position: absolute;
+  left: 20px; 
+  top: 30px; 
+  overflow: visible;
+  border-bottom: 1px solid #ffffff; 
+}
+
+._10-00,
+._00-002,
+._0,
+._52 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "WorkSans-Medium", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  position: absolute;
+  top: 42px;
+}
+
+._10-00 {
+  left: 0px;
+}
+
+._00-002 {
+  right: 0px; 
+  left: unset; 
+}
+
+._0 {
+  left: 0px; 
+}
+
+._52 {
+  right: 0px; 
+  left: unset;
+}
+
+.frame-3312,
+.frame-3313,
+.frame-3314,
+.frame-3315 {
+  background: #8b2635;
+  border-radius: 8px;
+  padding: 4px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 18px;
+  position: absolute;
+  top: 0px;
+}
+
+.frame-3312 {
+  right: 0px; 
+  left: unset;
+}
+
+.frame-3313 {
+  left: 0px;
+}
+
+.frame-3314 {
+  right: 0px;
+  left: unset;
+}
+
+.frame-3315 {
+  left: 0px;
+}
+
+._00-00,
+._10-002,
+._5,
+._02 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "WorkSans-Regular", sans-serif;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 400;
+  position: relative;
+}
+
+/* Стилі для самого сайдбару */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 450px;
+    height: 100vh;
+    background-color: rgba(131, 35, 49, 0.899);
+    box-shadow: -4px 0 15px rgba(0,0,0,0.4);
+    transition: right 0.3s ease-in-out;
+    z-index: 9990;
+    overflow-y: auto;
+    backdrop-filter: blur(5px);
+    color: #fff;
+    border-radius: 0 8px 8px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #8d3c3c #881c37;
+    isolation: isolate;
+    padding: 20px; 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    justify-content: flex-start;
+}
+
+.sidebar.show {
+    right: 0;
+}
+
+.close-sidebar-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 9999;
+}
+
+.close-sidebar-button:hover {
+    transform: scale(1.2);
+}
+
+.range-slider-input{
+   width: calc(100% - 40px); 
+  height: 0px;
+  position: absolute;
+  left: 20px; 
+  top: 30px; 
+  overflow: visible;
+  border-bottom: 1px solid #f9f9f9; 
+  
+}

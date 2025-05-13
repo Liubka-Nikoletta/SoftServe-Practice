@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './FavouritesPage.css';
-//import '../../Sidebar/Sidebar.jsx'
+import Sidebar from '../../Sidebar/Sidebar.jsx';
 import MovieCard from "../../MovieCard/MovieCard.jsx";
 import FilterButton from "../../FilterButton/FilterButton";
 
@@ -9,10 +9,19 @@ const FavouritePage = () => {
   const [favouriteFilms, setFavouriteFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleFilterClick = () => {
     console.log('Кнопка фільтра натиснута');
   };
+
+  const handleToggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleCloseSidebar = () => {
+        setIsSidebarOpen(false);
+    };
 
   useEffect(() => {
     const loadFavouriteMovies = async () => {
@@ -46,7 +55,7 @@ const FavouritePage = () => {
     <div className="favourite-page">
       <div className="header-with-filter">
         <h1>Your Favourites</h1>
-        <FilterButton onClick={handleFilterClick} />
+        <FilterButton onClick={handleToggleSidebar} />
       </div>
       {favouriteFilms.length === 0 ? (
         <div className="no-favourites-message">
@@ -67,6 +76,7 @@ const FavouritePage = () => {
         </div>
         
       )}
+       <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} /> 
     </div>
   );
 };
