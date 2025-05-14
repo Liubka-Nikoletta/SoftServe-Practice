@@ -37,24 +37,12 @@ const MovieDetailsPage = () => {
   }, [isFavorite, localStorageKey]);
 
   useEffect(() => {
-    const loadFilteredSchedule = async () => {
-      try {
-        const storedSchedule = localStorage.getItem(
-          `schedule_movie_${movieId}`
-        );
-        if (storedSchedule) {
-          setScheduleData(JSON.parse(storedSchedule));
-        } else {
-          const scheduleModule = await import("../../../assets/schedule.json");
-          const schedule = scheduleModule.default;
-          const filteredSchedule = schedule.filter(
-            (item) => item.film_id === movieId
-          );
-          setScheduleData(filteredSchedule);
-        }
-      } catch (error) {
-        console.error("Error loading schedule data:", error);
-      }
+    const loadFilteredSchedule = () => {
+      const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+      const filteredSchedule = allSchedules.filter(
+        (item) => item.film_id === movieId
+      );
+      setScheduleData(filteredSchedule);
     };
     loadFilteredSchedule();
   }, [movieId]);
@@ -72,11 +60,13 @@ const MovieDetailsPage = () => {
   };
 
   const handleScheduleUpdate = (updatedSchedule) => {
-    setScheduleData(updatedSchedule);
-    localStorage.setItem(
-      `schedule_movie_${movieId}`,
-      JSON.stringify(updatedSchedule)
+    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    const otherSchedules = allSchedules.filter(
+      (item) => item.film_id !== movieId
     );
+    const newAllSchedules = [...otherSchedules, ...updatedSchedule];
+    localStorage.setItem("allSchedules", JSON.stringify(newAllSchedules));
+    setScheduleData(updatedSchedule);
   };
 
   const handleDeleteMovie = (id) => {
@@ -199,6 +189,7 @@ const MovieDetailsPage = () => {
         isClosing={isClosing}
         schedule={scheduleData}
         onScheduleUpdate={handleScheduleUpdate}
+        movieId={movieId} // Передаємо movieId в SessionsSidebar
       />
       <MovieHero
         movie={movieStorage}

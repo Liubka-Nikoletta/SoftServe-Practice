@@ -10,6 +10,7 @@ const SessionsSidebar = ({
   isClosing,
   schedule: initialSchedule,
   onScheduleUpdate,
+  movieId, // Отримуємо movieId як пропс
 }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -52,38 +53,53 @@ const SessionsSidebar = ({
   };
 
   const handleDeleteDay = (day, month) => {
-    setEditableSchedule((prevSchedule) => {
-      const newSchedule = prevSchedule.filter(
-        (session) => !(session.day === day && session.month === month)
-      );
-      if (onScheduleUpdate) {
-        onScheduleUpdate(newSchedule);
-      }
-      return newSchedule;
-    });
+    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    const updatedSchedules = allSchedules.filter(
+      (session) => !(session.film_id === movieId && session.day === day && session.month === month)
+    );
+    localStorage.setItem("allSchedules", JSON.stringify(updatedSchedules));
+    const newScheduleForMovie = editableSchedule.filter(
+      (session) => !(session.day === day && session.month === month)
+    );
+    setEditableSchedule(newScheduleForMovie);
+    if (onScheduleUpdate) {
+      onScheduleUpdate(newScheduleForMovie);
+    }
   };
 
   const handleDeleteSession = (day, month, timeToDelete) => {
-    setEditableSchedule((prevSchedule) => {
-      const newSchedule = prevSchedule
-        .map((session) => {
-          if (session.day === day && session.month === month) {
-            const updatedShowtimes = session.showtimes.filter(
-              (time) => time !== timeToDelete
-            );
-            if (updatedShowtimes.length === 0) {
-              return null;
-            }
-            return { ...session, showtimes: updatedShowtimes };
-          }
-          return session;
-        })
-        .filter(Boolean);
-      if (onScheduleUpdate) {
-        onScheduleUpdate(newSchedule);
+    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    const updatedSchedules = allSchedules.map((session) => {
+      if (session.film_id === movieId && session.day === day && session.month === month) {
+        const updatedShowtimes = session.showtimes.filter(
+          (time) => time !== timeToDelete
+        );
+        if (updatedShowtimes.length === 0) {
+          return null;
+        }
+        return { ...session, showtimes: updatedShowtimes };
       }
-      return newSchedule;
-    });
+      return session;
+    }).filter(Boolean);
+    localStorage.setItem("allSchedules", JSON.stringify(updatedSchedules));
+    const newScheduleForMovie = editableSchedule
+      .map((session) => {
+        if (session.day === day && session.month === month) {
+          const updatedShowtimes = session.showtimes.filter(
+            (time) => time !== timeToDelete
+          );
+          if (updatedShowtimes.length === 0) {
+            return null;
+          }
+          return { ...session, showtimes: updatedShowtimes };
+        }
+        return session;
+      })
+      .filter(Boolean);
+    setEditableSchedule(newScheduleForMovie);
+    if (onScheduleUpdate) {
+      onScheduleUpdate(newScheduleForMovie);
+    }
   };
 
   const handleOpenAddForm = () => {
@@ -107,50 +123,45 @@ const SessionsSidebar = ({
     const { day: formDayStr, month: formMonth, time: formTime } = formData;
     const formDay = parseInt(formDayStr);
 
-    setEditableSchedule((prevSchedule) => {
-      let updatedSchedule;
+    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    let updatedSchedules = [...allSchedules];
 
-      if (formMode === "add") {
-        let sessionExists = false;
-        updatedSchedule = prevSchedule.map((session) => {
-          if (session.day === formDay && session.month === formMonth) {
-            sessionExists = true;
-            const newShowtimes = [
-              ...new Set([...session.showtimes, formTime]),
-            ].sort();
-            return { ...session, showtimes: newShowtimes };
-          }
-          return session;
-        });
-        if (!sessionExists) {
-          updatedSchedule.push({
-            day: formDay,
-            month: formMonth,
-            showtimes: [formTime],
-          });
-        }
+    if (formMode === "add") {
+      const existingSession = updatedSchedules.find(
+        (s) => s.film_id === movieId && s.day === formDay && s.month === formMonth
+      );
+      if (existingSession) {
+        updatedSchedules = updatedSchedules.map((s) =>
+          s.film_id === movieId && s.day === formDay && s.month === formMonth
+            ? { ...s, showtimes: [...new Set([...s.showtimes, formTime])].sort() }
+            : s
+        );
       } else {
-        const {
-          day: originalDay,
-          month: originalMonth,
-          originalTime,
-        } = currentEditingSession;
-        updatedSchedule = prevSchedule.map((session) => {
-          if (session.day === originalDay && session.month === originalMonth) {
-            const newShowtimes = session.showtimes
-              .filter((st) => st !== originalTime)
-              .concat(formTime);
-            return { ...session, showtimes: [...new Set(newShowtimes)].sort() };
-          }
-          return session;
-        });
+        updatedSchedules.push({ film_id: movieId, day: formDay, month: formMonth, showtimes: [formTime] });
       }
+    } else {
+      const {
+        day: originalDay,
+        month: originalMonth,
+        originalTime,
+      } = currentEditingSession;
+      updatedSchedules = updatedSchedules.map((session) => {
+        if (session.film_id === movieId && session.day === originalDay && session.month === originalMonth) {
+          const newShowtimes = session.showtimes
+            .filter((st) => st !== originalTime)
+            .concat(formTime);
+          return { ...session, showtimes: [...new Set(newShowtimes)].sort() };
+        }
+        return session;
+      });
+    }
 
-      if (onScheduleUpdate) {
-        onScheduleUpdate(updatedSchedule);
-      }
-      return updatedSchedule;
-    });
+    localStorage.setItem("allSchedules", JSON.stringify(updatedSchedules));
+    const newScheduleForMovie = updatedSchedules.filter((s) => s.film_id === movieId);
+    setEditableSchedule(newScheduleForMovie);
+    if (onScheduleUpdate) {
+      onScheduleUpdate(newScheduleForMovie);
+    }
     handleCloseForm();
   };
 
@@ -188,20 +199,14 @@ const SessionsSidebar = ({
                   month={session.month}
                   showtimes={session.showtimes}
                   isEditMode={isEditMode}
-                  onDeleteDay={() =>
-                    handleDeleteDay(session.day, session.month)
-                  }
-                  onDeleteShowtime={(time) =>
-                    handleDeleteSession(session.day, session.month, time)
-                  }
-                  onEditShowtimeRequest={(time) =>
-                    handleOpenEditForm(session.day, session.month, time)
-                  }
+                  onDeleteDay={() => handleDeleteDay(session.day, session.month)}
+                  onDeleteShowtime={(time) => handleDeleteSession(session.day, session.month, time)}
+                  onEditShowtimeRequest={(time) => handleOpenEditForm(session.day, session.month, time)}
                 />
               ))
             ) : (
               <p className="sessions-sidebar__no-sessions">
-                No sessions available. Please check back later.
+                No sessions available for this movie.
               </p>
             )}
           </div>

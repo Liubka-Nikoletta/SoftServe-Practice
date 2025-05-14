@@ -1,0 +1,115 @@
+.custom-date-picker {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width: 280px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #333;
+}
+
+.cdp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 5px 0;
+}
+
+.cdp-header span {
+  font-weight: bold;
+  font-size: 1.1em;
+  text-transform: capitalize;
+  color: #8b2635;
+}
+
+.cdp-nav-button {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #8b2635;
+}
+.cdp-nav-button:hover {
+  background-color: #f0f0f0;
+  border-color: #ddd;
+}
+
+.cdp-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 5px;
+}
+
+.cdp-weekday {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #555;
+  padding: 5px 0;
+}
+
+.cdp-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cdp-day {
+  text-align: center;
+  padding: 8px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.cdp-day:not(.cdp-day-empty):hover {
+  background-color: #f9e7ea;
+  border-color: #e5b3b9;
+  color: #8b2635;
+}
+
+.cdp-day-empty {
+  cursor: default;
+}
+
+.cdp-day-selected {
+  background-color: #8b2635;
+  color: white;
+  border-color: #6a1a27;
+}
+.cdp-day-selected:hover {
+  background-color: #6a1a27;
+  border-color: #54131d;
+}
+
+.cdp-day-today {
+  font-weight: bold;
+  border: 1px solid #8b2635;
+  color: #8b2635;
+}
+.cdp-day-today.cdp-day-selected {
+  color: white;
+}
+
+.cdp-close-button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #8b2635;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cdp-close-button:hover {
+  background-color: #6a1a27;
+}

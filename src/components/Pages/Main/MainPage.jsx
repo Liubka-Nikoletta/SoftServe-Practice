@@ -12,6 +12,7 @@ const MainPage = () => {
   const [currentlyPlayingFilms, setCurrentlyPlayingFilms] = useState([]);
   const [comingSoonFilms, setComingSoonFilms] = useState([]);
   const [favoriteFilms, setFavoriteFilms] = useState([]);
+  const [allSchedules, setAllSchedules] = useState([]); // Додано стан для всіх сеансів
 
   const loadMovieData = async () => {
     console.log("[MainPage.jsx] loadMovieData called");
@@ -19,6 +20,7 @@ const MainPage = () => {
       localStorage.getItem("deletedMovies") || "[]"
     );
 
+    // Завантаження "Зараз в прокаті"
     const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
     let rawCurrentlyPlaying = [];
     if (storedCurrentlyPlaying) {
@@ -41,6 +43,7 @@ const MainPage = () => {
     );
     setCurrentlyPlayingFilms(filteredCurrentlyPlaying.slice(0, 8));
 
+    // Завантаження "Скоро в прокаті"
     const storedComingSoon = localStorage.getItem("comingSoon");
     let rawComingSoon = [];
     if (storedComingSoon) {
@@ -60,6 +63,7 @@ const MainPage = () => {
     );
     setComingSoonFilms(filteredComingSoon.slice(0, 8));
 
+    // Завантаження "Улюблені фільми"
     const allMoviesMap = new Map();
     [
       ...(Array.isArray(rawCurrentlyPlaying) ? rawCurrentlyPlaying : []),
@@ -69,16 +73,13 @@ const MainPage = () => {
         allMoviesMap.set(movie.id, movie);
       }
     });
-
     const allAvailableMovies = Array.from(allMoviesMap.values());
-
     const actualFavoriteFilms = allAvailableMovies
       .filter((movie) => movie && movie.id && !deletedMovies.includes(movie.id))
       .filter((movie) => {
         const favoriteKey = `favorite_movie_${movie.id}`;
         return localStorage.getItem(favoriteKey) === "true";
       });
-
     setFavoriteFilms(actualFavoriteFilms.slice(0, 12));
     console.log(
       "[MainPage.jsx] Favorite films loaded count:",
@@ -87,8 +88,32 @@ const MainPage = () => {
     );
   };
 
+  const loadScheduleData = async () => {
+    console.log("[MainPage.jsx] loadScheduleData called");
+    const storedSchedules = localStorage.getItem("allSchedules");
+    if (storedSchedules) {
+      try {
+        setAllSchedules(JSON.parse(storedSchedules));
+        console.log("[MainPage.jsx] Schedules loaded from localStorage");
+      } catch (error) {
+        console.error("Error parsing allSchedules from localStorage", error);
+        setAllSchedules([]);
+        const scheduleModule = await import("../../../assets/schedule.json");
+        localStorage.setItem("allSchedules", JSON.stringify(scheduleModule.default));
+        setAllSchedules(scheduleModule.default);
+        console.log("[MainPage.jsx] Schedules loaded from JSON and saved to localStorage");
+      }
+    } else {
+      const scheduleModule = await import("../../../assets/schedule.json");
+      localStorage.setItem("allSchedules", JSON.stringify(scheduleModule.default));
+      setAllSchedules(scheduleModule.default);
+      console.log("[MainPage.jsx] Schedules loaded from JSON and saved to localStorage");
+    }
+  };
+
   useEffect(() => {
     loadMovieData();
+    loadScheduleData(); // Завантаження даних про сесії
 
     const handleMovieDataUpdated = () => {
       loadMovieData();
