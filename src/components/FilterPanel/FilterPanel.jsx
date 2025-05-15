@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import './FilterPanel.css'; 
-import FilterCard from '../FilterCard/FilterCard'; 
+import './FilterPanel.css';
+import FilterCard from '../FilterCard/FilterCard';
 import { v4 as uuidv4 } from 'uuid';
-import CustomDatePicker from '../CustomDatePicker/CustomDatePicker'; 
+import CustomDatePicker from '../CustomDatePicker/CustomDatePicker';
 
 const RangeSlider = React.memo(function RangeSlider({ title, min, max, value, onChange, formatLabel, step: propStep }) {
+
+
   const [currentMinValue, setCurrentMinValue] = useState(value[0]);
   const [currentMaxValue, setCurrentMaxValue] = useState(value[1]);
 
   const sliderRef = useRef(null);
   const dragStateRef = useRef({
-    type: null,
+    type: null, 
     initialMouseX: 0,
     sliderWidth: 0,
     sliderLeft: 0
@@ -19,131 +21,158 @@ const RangeSlider = React.memo(function RangeSlider({ title, min, max, value, on
 
   useEffect(() => {
     internalValueRef.current = [currentMinValue, currentMaxValue];
-  }, [currentMinValue, currentMaxValue]);
+  }, [currentMinValue, currentMaxValue, title]);
 
   const isTimeSlider = title.toLowerCase().includes('час');
   const step = propStep !== undefined ? propStep : (isTimeSlider ? 1 : 0.1);
 
 
   useEffect(() => {
+    let stateChanged = false;
     if (value[0] !== currentMinValue) {
       setCurrentMinValue(value[0]);
+      stateChanged = true;
     }
     if (value[1] !== currentMaxValue) {
       setCurrentMaxValue(value[1]);
+      stateChanged = true;
     }
-  }, [value, currentMinValue, currentMaxValue]);
+
+  }, [value, currentMinValue, currentMaxValue, title]); 
 
   const getThumbPercent = useCallback((val) => {
-    if (max === min) return 0;
+    if (max === min) {
+        return 0;
+    }
     const percent = ((val - min) / (max - min)) * 100;
     return Math.max(0, Math.min(100, percent));
-  }, [min, max]);
+  }, [min, max, title]);
 
   const getValueFromPercent = useCallback((percent) => {
     let rawValue = min + (percent / 100) * (max - min);
     let steppedValue = Math.round(rawValue / step) * step;
     steppedValue = Math.max(min, Math.min(max, steppedValue));
-    return isTimeSlider ? Math.round(steppedValue) : parseFloat(steppedValue.toFixed(step.toString().includes('.') ? step.toString().split('.')[1].length : 0));
-  }, [min, max, step, isTimeSlider]);
+    const finalValue = isTimeSlider ? Math.round(steppedValue) : parseFloat(steppedValue.toFixed(step.toString().includes('.') ? step.toString().split('.')[1].length : 0));
+    return finalValue;
+  }, [min, max, step, isTimeSlider, title]);
 
   const handleMouseMoveDocument = useCallback((event) => {
-    if (!dragStateRef.current.type || dragStateRef.current.sliderWidth === 0) return;
+    if (!dragStateRef.current.type || dragStateRef.current.sliderWidth === 0) {
+      if (!dragStateRef.current.type) console.warn(`[RangeSlider "${title}" handleMouseMoveDocument] No drag type set. Aborting move.`);
+      if (dragStateRef.current.sliderWidth === 0) console.warn(`[RangeSlider "${title}" handleMouseMoveDocument] Slider width is 0. Aborting move.`);
+      return;
+    }
     event.preventDefault();
 
     const clientX = event.type === 'touchmove' ? event.touches[0].clientX : event.clientX;
     const { type, sliderWidth, sliderLeft } = dragStateRef.current;
-    const [calcMinVal, calcMaxVal] = internalValueRef.current;
-
+    const [valMinAtDragStart, valMaxAtDragStart] = internalValueRef.current;
     const mouseXOnSlider = clientX - sliderLeft;
     let newPercent = (mouseXOnSlider / sliderWidth) * 100;
-    newPercent = Math.max(0, Math.min(100, newPercent));
-    let newValue = getValueFromPercent(newPercent);
+    newPercent = Math.max(0, Math.min(100, newPercent)); 
+    let newValueFromMouse = getValueFromPercent(newPercent);
 
-    let newMin = calcMinVal;
-    let newMax = calcMaxVal;
+    let newProposedMin = valMinAtDragStart;
+    let newProposedMax = valMaxAtDragStart;
 
     if (type === 'min') {
-      newValue = Math.min(newValue, calcMaxVal - step);
-      newValue = Math.max(min, newValue);
-      newMin 
-      newValue = Math.max(newValue, calcMinVal + step);
-      newValue = Math.min(max, newValue);
-      newMax = newValue;
+      newProposedMin = Math.min(newValueFromMouse, valMaxAtDragStart - step); 
+      newProposedMin = Math.max(min, newProposedMin);         
+    } else if (type === 'max') {
+      newProposedMax = Math.max(newValueFromMouse, valMinAtDragStart + step); 
+      newProposedMax = Math.min(max, newProposedMax);           
     }
-
-    if (newMin !== calcMinVal || newMax !== calcMaxVal) {
-        onChange([newMin, newMax]);
+    if (newProposedMin !== valMinAtDragStart || newProposedMax !== valMaxAtDragStart) {
+      console.log(`[RangeSlider "${title}" handleMouseMoveDocument] Values changed. Old from internalRef: [${valMinAtDragStart}, ${valMaxAtDragStart}], New Proposed: [${newProposedMin}, ${newProposedMax}]. Calling onChange.`);
+      onChange([newProposedMin, newProposedMax]);
+    } else {
     }
-
-  }, [getValueFromPercent, onChange, min, max, step, isTimeSlider]);
+  }, [getValueFromPercent, onChange, min, max, step, title]);
 
   const handleMouseUpDocument = useCallback(() => {
     if (dragStateRef.current.type) {
-      dragStateRef.current.type = null;
+      console.log(`[RangeSlider "${title}" handleMouseUpDocument] Mouse/Touch up. Clearing drag state. Type was: ${dragStateRef.current.type}`);
+      dragStateRef.current.type = null; 
       document.removeEventListener('mousemove', handleMouseMoveDocument);
       document.removeEventListener('mouseup', handleMouseUpDocument);
       document.removeEventListener('touchmove', handleMouseMoveDocument);
       document.removeEventListener('touchend', handleMouseUpDocument);
+      console.log(`[RangeSlider "${title}" handleMouseUpDocument] Document event listeners REMOVED.`);
+    } else {
+        // console.log(`[RangeSlider "${title}" handleMouseUpDocument] Mouse/Touch up, but no active drag type. No listeners to remove.`);
     }
-  }, [handleMouseMoveDocument]);
+  }, [handleMouseMoveDocument, title]); 
 
   const handleMouseDown = useCallback((thumbTypeToDrag, event) => {
-    event.preventDefault();
+
     if (!sliderRef.current) {
-      console.error(`[RangeSlider "${title}" handleMouseDown] Slider ref is not available!`);
       return;
     }
 
     const clientX = event.type === 'touchstart' ? event.touches[0].clientX : event.clientX;
     const sliderRect = sliderRef.current.getBoundingClientRect();
+    console.log(`[RangeSlider "${title}" handleMouseDown] Slider Rect: Left=${sliderRect.left.toFixed(2)}, Width=${sliderRect.width.toFixed(2)}. ClientX: ${clientX.toFixed(2)}`);
 
     if (sliderRect.width === 0) {
-      console.warn(`[RangeSlider "${title}" handleMouseDown] УВАГА: Ширина слайдера (${title}) дорівнює 0. Перетягування може не працювати коректно.`);
+      console.warn(`[RangeSlider "${title}" handleMouseDown] WARNING: Slider width is 0. Dragging will likely not work. Ensure component is visible and layout is complete.`);
     }
 
-    let actualThumbType = thumbTypeToDrag;
-    if ((event.target === sliderRef.current || event.target === sliderRef.current.querySelector('.slider-track')) && !thumbTypeToDrag) {
+    let actualThumbTypeForDrag = thumbTypeToDrag;
+    if (!thumbTypeToDrag && (event.target === sliderRef.current || event.target.classList.contains('slider-track') || event.target.classList.contains('slider') )) {
+        console.log(`[RangeSlider "${title}" handleMouseDown] Click on TRACK detected.`);
         const clickPercent = ((clientX - sliderRect.left) / sliderRect.width) * 100;
         const clickValue = getValueFromPercent(clickPercent);
-        if (Math.abs(clickValue - internalValueRef.current[0]) < Math.abs(clickValue - internalValueRef.current[1])) {
-            actualThumbType = 'min';
-            const newMin = Math.min(Math.max(clickValue, min), internalValueRef.current[1] - step);
-            onChange([newMin, internalValueRef.current[1]]);
+        console.log(`[RangeSlider "${title}" handleMouseDown] Track Click Percent: ${clickPercent.toFixed(2)}%, Click Value: ${clickValue}`);
+
+        const [currentMin, currentMax] = internalValueRef.current; 
+        let newMinVal = currentMin;
+        let newMaxVal = currentMax;
+
+        if (Math.abs(clickValue - currentMin) < Math.abs(clickValue - currentMax)) {
+            actualThumbTypeForDrag = 'min'; 
+            newMinVal = Math.min(Math.max(clickValue, min), currentMax - step);
+            newMinVal = getValueFromPercent(getThumbPercent(newMinVal)); 
         } else {
-            actualThumbType = 'max';
-            const newMax = Math.max(Math.min(clickValue, max), internalValueRef.current[0] + step);
-            onChange([internalValueRef.current[0], newMax]);
+            actualThumbTypeForDrag = 'max';
+            newMaxVal = Math.max(Math.min(clickValue, max), currentMin + step); 
+            newMaxVal = getValueFromPercent(getThumbPercent(newMaxVal));
         }
+        if (newMinVal !== currentMin || newMaxVal !== currentMax) {
+            console.log(`[RangeSlider "${title}" handleMouseDown] Track click caused value change. Calling onChange with [${newMinVal}, ${newMaxVal}]`);
+            onChange([newMinVal, newMaxVal]);
+        }
+    } else if (thumbTypeToDrag) {
+        actualThumbTypeForDrag = thumbTypeToDrag;
+    } else {
+        return;
     }
 
-    dragStateRef.current = {
-      type: actualThumbType,
-      initialMouseX: clientX,
-      sliderWidth: sliderRect.width,
-      sliderLeft: sliderRect.left,
-    };
+    if (actualThumbTypeForDrag) {
+        dragStateRef.current = {
+            type: actualThumbTypeForDrag,
+            initialMouseX: clientX,
+            sliderWidth: sliderRect.width,
+            sliderLeft: sliderRect.left,
+        };
+        document.addEventListener('mousemove', handleMouseMoveDocument);
+        document.addEventListener('mouseup', handleMouseUpDocument);
+        document.addEventListener('touchmove', handleMouseMoveDocument, { passive: false }); 
+        document.addEventListener('touchend', handleMouseUpDocument);
+    }
 
-
-    document.addEventListener('mousemove', handleMouseMoveDocument);
-    document.addEventListener('mouseup', handleMouseUpDocument);
-    document.addEventListener('touchmove', handleMouseMoveDocument, { passive: false });
-    document.addEventListener('touchend', handleMouseUpDocument);
-
-  }, [title, getValueFromPercent, handleMouseMoveDocument, handleMouseUpDocument, onChange, min, max, step, internalValueRef]);
+  }, [title, getValueFromPercent, getThumbPercent, handleMouseMoveDocument, handleMouseUpDocument, onChange, min, max, step]); 
 
   useEffect(() => {
-    const cleanupDrag = handleMouseUpDocument;
-    return () => {
-      if (dragStateRef.current.type) {
-        cleanupDrag();
+    const cleanup = () => {
+      if (dragStateRef.current.type) { 
+        handleMouseUpDocument(); 
       }
     };
-  }, [handleMouseUpDocument]);
+    return cleanup; 
+  }, [handleMouseUpDocument, title]); 
 
   const minPercent = getThumbPercent(currentMinValue);
   const maxPercent = getThumbPercent(currentMaxValue);
-
   return (
     <FilterCard title={title}>
       <div className="range-slider-container">
@@ -151,38 +180,38 @@ const RangeSlider = React.memo(function RangeSlider({ title, min, max, value, on
           <div className="thumb-label" style={{ left: `${minPercent}%`, transform: 'translateX(-50%)' }}>
             <span className="label-background">{formatLabel(currentMinValue)}</span>
           </div>
-          <div className="thumb-label" style={{ left: `${maxPercent}%`, transform: 'translateX(-50%)'  }}>
+          <div className="thumb-label" style={{ left: `${maxPercent}%`, transform: 'translateX(-50%)' }}>
             <span className="label-background">{formatLabel(currentMaxValue)}</span>
           </div>
         </div>
         <div
-          className="slider"
+          className="slider" 
           ref={sliderRef}
           onMouseDown={(e) => {
-             if (e.target === sliderRef.current || e.target.classList.contains('slider-track')) {
-              handleMouseDown(null, e);
+            if (e.target === sliderRef.current || e.target.classList.contains('slider-track')) {
+              handleMouseDown(null, e); 
             }
           }}
           onTouchStart={(e) => {
-             if (e.target === sliderRef.current || e.target.classList.contains('slider-track')) {
+            if (e.target === sliderRef.current || e.target.classList.contains('slider-track')) {
               handleMouseDown(null, e);
             }
           }}
         >
           <div
             className="slider-thumb slider-thumb-min"
-            style={{ left: `${minPercent}%`, zIndex: dragStateRef.current.type === 'min' || (dragStateRef.current.type !== 'max' && minPercent <= maxPercent) ? 3 : 1 }}
-            onMouseDown={(e) => { e.stopPropagation(); handleMouseDown('min', e); }}
-            onTouchStart={(e) => { e.stopPropagation(); handleMouseDown('min', e); }}
+            style={{ left: `${minPercent}%`, zIndex: dragStateRef.current.type === 'min' || (dragStateRef.current.type !== 'max' && currentMinValue <= currentMaxValue) ? 3 : 1 }}
+            onMouseDown={(e) => { e.stopPropagation();  handleMouseDown('min', e); }}
+            onTouchStart={(e) => { e.stopPropagation();  handleMouseDown('min', e); }}
           />
           <div
             className="slider-thumb slider-thumb-max"
-            style={{ left: `${maxPercent}%`, zIndex: dragStateRef.current.type === 'max' || (dragStateRef.current.type !== 'min' && maxPercent > minPercent) ? 3 : 1 }}
-            onMouseDown={(e) => { e.stopPropagation(); handleMouseDown('max', e); }}
+            style={{ left: `${maxPercent}%`, zIndex: dragStateRef.current.type === 'max' || (dragStateRef.current.type !== 'min' && currentMaxValue > currentMinValue) ? 3 : 1 }}
+            onMouseDown={(e) => { e.stopPropagation();  handleMouseDown('max', e); }}
             onTouchStart={(e) => { e.stopPropagation(); handleMouseDown('max', e); }}
           />
           <div
-            className="slider-track"
+            className="slider-track" 
             style={{
               left: `${Math.min(minPercent, maxPercent)}%`,
               width: `${Math.abs(maxPercent - minPercent)}%`,
@@ -207,15 +236,16 @@ const FilterPanel = ({ isOpen, onClose, onFilterChange }) => {
   const [selectedAgeRatings, setSelectedAgeRatings] = useState([]);
   const [sortBy, setSortBy] = useState('');
 
-  const [selectedDateType, setSelectedDateType] = useState(null);
-  const [chosenSpecificDate, setChosenSpecificDate] = useState(null);
+  const [selectedDateType, setSelectedDateType] = useState(null); 
+  const [chosenSpecificDate, setChosenSpecificDate] = useState(null); 
 
-  const [sessionTimeRange, setSessionTimeRange] = useState([0, 24 * 60 - 1]);
+  const [sessionTimeRange, setSessionTimeRange] = useState([0, 24 * 60 - 1]); 
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   useEffect(() => {
     const loadFilterOptions = () => {
       try {
+        console.log("[FilterPanel useEffect loadFilterOptions] Attempting to load films from localStorage.");
         const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
         const storedComingSoon = localStorage.getItem("comingSoon");
 
@@ -247,68 +277,85 @@ const FilterPanel = ({ isOpen, onClose, onFilterChange }) => {
   }, []);
 
   const handleGenreChange = useCallback((genre) => {
-    setSelectedGenres(prev => prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]);
+    setSelectedGenres(prev => {
+        const newSelected = prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre];
+        return newSelected;
+    });
   }, []);
 
   const handleAgeRatingChange = useCallback((age) => {
-    setSelectedAgeRatings(prev => prev.includes(age) ? prev.filter(a => a !== age) : [...prev, age]);
+    setSelectedAgeRatings(prev => {
+        const newSelected = prev.includes(age) ? prev.filter(a => a !== age) : [...prev, age];
+        return newSelected;
+    });
   }, []);
 
   const handleRatingChange = useCallback((values) => {
+    console.log(`[FilterPanel] Rating range CHANGED BY SLIDER. New values: [${values[0]}, ${values[1]}]`);
     setRatingRange(values);
   }, []);
 
   const handleSessionTimeChange = useCallback((values) => {
+    console.log(`[FilterPanel] Session time range CHANGED BY SLIDER. New values: [${values[0]}, ${values[1]}]`);
     setSessionTimeRange(values);
   }, []);
 
   const handleSortChange = useCallback((sortType) => {
-    setSortBy(prevSortBy => (prevSortBy === sortType ? '' : sortType));
+    setSortBy(prevSortBy => {
+        const newSortBy = prevSortBy === sortType ? '' : sortType;
+        return newSortBy;
+    });
   }, []);
 
-  const handleQuickDateChange = useCallback((type) => {
-    if (selectedDateType === type && type !== 'specific') {
+  const handleQuickDateChange = useCallback((type) => { 
+    console.log(`[FilterPanel] Quick date change. Type: ${type}, Current selectedDateType: ${selectedDateType}`);
+    if (selectedDateType === type && type !== 'specific') { 
+      console.log(`[FilterPanel] Deselecting quick date: ${type}. Clearing date selection.`);
       setSelectedDateType(null);
       setChosenSpecificDate(null);
-    } else {
+    } else { 
+      console.log(`[FilterPanel] Selecting quick date: ${type}.`);
       setSelectedDateType(type);
-      setChosenSpecificDate(null);
-      setIsDatePickerOpen(false);
+      setChosenSpecificDate(null); 
+      setIsDatePickerOpen(false); 
     }
   }, [selectedDateType]);
 
   const handleSpecificDateSelect = useCallback((dateString) => {
+    console.log(`[FilterPanel] Specific date selected from picker: ${dateString}`);
     setChosenSpecificDate(dateString);
     setSelectedDateType('specific');
-    setIsDatePickerOpen(false);
+    setIsDatePickerOpen(false); 
   }, []);
 
   const toggleDatePicker = () => {
-    setIsDatePickerOpen(prev => {
-        const opening = !prev;
-        if (opening) {
-            if (selectedDateType === 'today' || selectedDateType === 'tomorrow') {
+    console.log(`[FilterPanel] Toggling Date Picker. Current isDatePickerOpen: ${isDatePickerOpen}, selectedDateType: ${selectedDateType}, chosenSpecificDate: ${chosenSpecificDate}`);
+    setIsDatePickerOpen(prevIsOpen => {
+        const newIsDatePickerOpen = !prevIsOpen;
+        console.log(`[FilterPanel toggleDatePicker] Date picker will be ${newIsDatePickerOpen ? 'OPENED' : 'CLOSED'}.`);
+        if (newIsDatePickerOpen) {
+            if (selectedDateType === 'today' || selectedDateType === 'tomorrow' || !selectedDateType) {
+                console.log(`[FilterPanel toggleDatePicker] Opening picker. Setting selectedDateType to 'specific'.`);
                 setSelectedDateType('specific');
-            } else if (!chosenSpecificDate) { 
-                 setSelectedDateType('specific');
             }
         } else {
             if (!chosenSpecificDate && selectedDateType === 'specific') {
+                console.log(`[FilterPanel toggleDatePicker] Closing picker, no specific date chosen, and type was 'specific'. Setting selectedDateType to null.`);
             }
         }
-        return opening;
+        return newIsDatePickerOpen;
     });
   };
 
 
   const formatTimeLabel = useCallback((minutes) => {
-    const totalMinutes = Math.min(Math.max(0, minutes), 24 * 60 - 1);
+    const totalMinutes = Math.round(Math.min(Math.max(0, minutes), 24 * 60 - 1));
     const hours = Math.floor(totalMinutes / 60);
     const mins = totalMinutes % 60;
     return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   }, []);
 
-  const formatRatingLabel = useCallback((value) => value.toFixed(1), []);
+  const formatRatingLabel = useCallback((value) => parseFloat(value).toFixed(1), []);
 
   const applyFilters = useCallback(() => {
     const filters = {
@@ -324,6 +371,7 @@ const FilterPanel = ({ isOpen, onClose, onFilterChange }) => {
       ageRatings: selectedAgeRatings,
       sortBy: sortBy,
     };
+    console.log("[FilterPanel applyFilters] Applying filters with values:", JSON.stringify(filters, null, 2));
     onFilterChange(filters);
     onClose();
   }, [selectedDateType, chosenSpecificDate, sessionTimeRange, ratingRange, selectedGenres, selectedAgeRatings, sortBy, onFilterChange, onClose]);
@@ -368,7 +416,7 @@ const FilterPanel = ({ isOpen, onClose, onFilterChange }) => {
               <CustomDatePicker
                 onDateSelect={handleSpecificDateSelect}
                 initialSelectedDate={chosenSpecificDate}
-                onClose={() => setIsDatePickerOpen(false)}
+                onClose={() => { console.log("[FilterPanel CustomDatePicker] onClose called from date picker component itself."); setIsDatePickerOpen(false);}}
               />
             </div>
           )}
@@ -378,8 +426,8 @@ const FilterPanel = ({ isOpen, onClose, onFilterChange }) => {
           title="Час сеансу"
           min={0}
           max={24 * 60 - 1}
-          value={sessionTimeRange}
-          onChange={handleSessionTimeChange}
+          value={sessionTimeRange} 
+          onChange={handleSessionTimeChange} 
           formatLabel={formatTimeLabel}
           step={1}
         />
@@ -404,7 +452,7 @@ const FilterPanel = ({ isOpen, onClose, onFilterChange }) => {
           max={10}
           step={0.1}
           value={ratingRange}
-          onChange={handleRatingChange}
+          onChange={handleRatingChange} 
           formatLabel={formatRatingLabel}
         />
         <FilterCard title="Вік">
