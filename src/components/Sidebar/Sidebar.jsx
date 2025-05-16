@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import "./sidebar.css";
+import "./Sidebar.css";
 
 const Sidebar = ({ isOpen, onClose, onFilterChange }) => {
     const sidebarClass = isOpen ? "sidebar show" : "sidebar";

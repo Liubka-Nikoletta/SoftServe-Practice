@@ -20,7 +20,8 @@ function App() {
         sort: null,
     });
 
-    
+
+  
     const handleFilterChange = (filterType, value) => {
         console.log(`Оновлення фільтра: Тип=${filterType}, Значення=`, value); 
         setFilters(prevFilters => ({

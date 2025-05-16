@@ -41,6 +41,7 @@ const FavouritePage = () => {
     };
 
   
+    
     loadFavouriteMovies();
   }, []);
 
@@ -75,7 +76,7 @@ const FavouritePage = () => {
             />
           ))}
         </div>
-        
+
       )}
        <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} /> 
     </div>
