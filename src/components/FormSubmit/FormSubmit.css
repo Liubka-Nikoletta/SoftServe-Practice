@@ -1,0 +1,16 @@
+.form-submit__button {
+  border-radius: 0.5rem;
+  background: #8b2635;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1rem;
+  padding: 0.25rem 0.625rem;
+  width: 100%;
+  height: 2.8125rem;
+}
+
+.form-submit__button:hover {
+  background: #a03b4c;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}

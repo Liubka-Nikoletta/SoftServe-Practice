@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import "./CurrentlyPlaying.css";
+import React, { useState, useEffect, useCallback } from 'react';
+import './FavouritesPage.css';
 import MovieCard from "../../MovieCard/MovieCard.jsx";
 import FilterButton from "../../FilterButton/FilterButton";
 import FilterPanel from "../../FilterPanel/FilterPanel";
@@ -21,58 +21,75 @@ const getTargetDateString = (sessionDateFilterType, specificDate) => {
   return null;
 };
 
-
 const monthMap = {
   'січень': '01', 'лютий': '02', 'березень': '03', 'квітень': '04',
   'травень': '05', 'червень': '06', 'липень': '07', 'серпень': '08',
   'вересень': '09', 'жовтень': '10', 'листопад': '11', 'грудень': '12'
 };
 
-const CurrentlyPlaying = () => {
-  const [allCurrentlyPlayingFilms, setAllCurrentlyPlayingFilms] = useState([]);
+const FavouritePage = () => {
+  const [allFavouriteFilms, setAllFavouriteFilms] = useState([]);
   const [displayedFilms, setDisplayedFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [schedules, setSchedules] = useState([]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
-        const deletedMovies = JSON.parse(localStorage.getItem("deletedMovies") || "[]");
-        let filmsData = [];
+  const loadFavouriteMovies = useCallback(() => {
+    setLoading(true);
+    try {
+      const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
+      const storedComingSoon = localStorage.getItem("comingSoon");
+      const deletedMovies = JSON.parse(localStorage.getItem("deletedMovies") || "[]");
 
-        if (storedCurrentlyPlaying) {
-          filmsData = JSON.parse(storedCurrentlyPlaying).filter(
-            (movie) => movie && movie.id && !deletedMovies.includes(movie.id)
-          );
-        } else {
-          console.warn("No 'currentlyPlaying' films found in localStorage. Consider seeding initial data.");
-        }
-        setAllCurrentlyPlayingFilms(filmsData);
-        setDisplayedFilms(filmsData);
-
-        const storedSchedules = localStorage.getItem("allSchedules");
-        if (storedSchedules) {
-          setSchedules(JSON.parse(storedSchedules));
-        } else {
-          console.warn("No 'allSchedules' found in localStorage.");
-        }
-        setError(null);
-      } catch (err) {
-        console.error("Помилка завантаження даних CurrentlyPlaying:", err);
-        setError(err);
-        setAllCurrentlyPlayingFilms([]);
-        setDisplayedFilms([]);
-      } finally {
-        setLoading(false);
+      let allSourceMovies = [];
+      if (storedCurrentlyPlaying) {
+        allSourceMovies = allSourceMovies.concat(JSON.parse(storedCurrentlyPlaying));
       }
-    };
+      if (storedComingSoon) {
+        allSourceMovies = allSourceMovies.concat(JSON.parse(storedComingSoon));
+      }
 
-    loadData();
+      const uniqueMovies = allSourceMovies.filter((movie, index, self) =>
+        movie && movie.id && index === self.findIndex((m) => m && m.id === movie.id)
+      );
+
+      const favouriteMovies = uniqueMovies.filter(movie => {
+        const favoriteKey = `favorite_movie_${movie.id}`;
+        return localStorage.getItem(favoriteKey) === "true" && !deletedMovies.includes(movie.id);
+      });
+
+      setAllFavouriteFilms(favouriteMovies);
+      setDisplayedFilms(favouriteMovies);
+      setError(null);
+    } catch (e) {
+      setError(e);
+      console.error("Помилка завантаження улюблених фільмів:", e);
+      setAllFavouriteFilms([]);
+      setDisplayedFilms([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadFavouriteMovies();
+
+    const storedSchedules = localStorage.getItem("allSchedules");
+    if (storedSchedules) {
+      setSchedules(JSON.parse(storedSchedules));
+    } else {
+       console.warn("No 'allSchedules' found in localStorage for FavouritesPage.");
+    }
+
+    const handleMovieDataUpdated = () => {
+      loadFavouriteMovies();
+    };
+    window.addEventListener("movieDataUpdated", handleMovieDataUpdated);
+    return () => {
+      window.removeEventListener("movieDataUpdated", handleMovieDataUpdated);
+    };
+  }, [loadFavouriteMovies]);
 
   const handleFilterClick = () => {
     setIsFilterPanelOpen(true);
@@ -83,10 +100,9 @@ const CurrentlyPlaying = () => {
   };
 
   const handleFilterChange = useCallback((filters) => {
-    console.log("Застосовані фільтри в CurrentlyPlaying:", filters);
-    let filteredMovies = [...allCurrentlyPlayingFilms];
+    console.log("Застосовані фільтри в FavouritesPage:", filters);
+    let filteredMovies = [...allFavouriteFilms];
     const currentYearForSchedule = new Date().getFullYear();
-
     const { sessionDateFilter, sessionStartTime, sessionEndTime } = filters;
     const targetDateString = getTargetDateString(sessionDateFilter.type, sessionDateFilter.date);
 
@@ -97,20 +113,20 @@ const CurrentlyPlaying = () => {
             if (!movieSchedules.length) return false;
 
             return movieSchedules.some(schedule => {
-                let scheduleDateMatches = !targetDateString; 
+                let scheduleDateMatches = !targetDateString;
                 if (targetDateString) {
                     const scheduleMonthStr = schedule.month ? schedule.month.toLowerCase() : '';
                     const scheduleMonthNum = monthMap[scheduleMonthStr];
                     if (!scheduleMonthNum) return false;
-
                     const scheduleDayPadded = schedule.day.toString().padStart(2, '0');
                     const scheduleFullDate = `${currentYearForSchedule}-${scheduleMonthNum}-${scheduleDayPadded}`;
                     scheduleDateMatches = scheduleFullDate === targetDateString;
                 }
                 if (targetDateString && !scheduleDateMatches) return false;
-                const isTimeFiltered = sessionStartTime > 0 || sessionEndTime < (24 * 60 - 1);
-                if (!isTimeFiltered) return scheduleDateMatches; 
 
+                const isTimeFiltered = sessionStartTime > 0 || sessionEndTime < (24 * 60 - 1);
+                if (!isTimeFiltered) return scheduleDateMatches;
+                
                 if (!schedule.showtimes || schedule.showtimes.length === 0) return false;
 
                 return schedule.showtimes.some(timeStr => {
@@ -130,19 +146,20 @@ const CurrentlyPlaying = () => {
         return filters.genres.some(selectedGenre => movieGenres.includes(selectedGenre));
       });
     }
+
     if (filters.ageRatings && filters.ageRatings.length > 0) {
       filteredMovies = filteredMovies.filter(movie => filters.ageRatings.includes(movie.age));
     }
+
     if (filters.sortBy) {
       const parseDate = (dateStr) => {
-        if (!dateStr || typeof dateStr !== 'string') return new Date(0); 
+        if (!dateStr || typeof dateStr !== 'string') return new Date(0);
         const parts = dateStr.split('.');
         if (parts.length === 3) {
           return new Date(parts[2], parts[1] - 1, parts[0]);
         }
-        return new Date(0); 
+        return new Date(0);
       };
-
       switch (filters.sortBy) {
         case 'newest':
           filteredMovies.sort((a, b) => parseDate(b.release_date) - parseDate(a.release_date));
@@ -166,29 +183,31 @@ const CurrentlyPlaying = () => {
           break;
       }
     }
-    setDisplayedFilms(filteredMovies);
-  }, [allCurrentlyPlayingFilms, schedules]);
 
+    setDisplayedFilms(filteredMovies);
+  }, [allFavouriteFilms, schedules]);
 
   if (loading) {
-    return <div className="currently-playing">Завантаження фільмів...</div>;
+    return <div className="favourite-page">Завантаження улюблених фільмів...</div>;
   }
 
   if (error) {
-    return (
-      <div className="currently-playing">Помилка завантаження фільмів: {error.message}</div>
-    );
+    return <div className="favourite-page">Помилка завантаження улюблених фільмів: {error.message}</div>;
   }
 
   return (
-    <div className="currently-playing">
+    <div className="favourite-page">
       <div className="header-with-filter">
-        <h1>Currently Playing</h1>
+        <h1>Your Favourites</h1>
         <FilterButton onClick={handleFilterClick} />
       </div>
-      {displayedFilms.length > 0 ? (
+      {displayedFilms.length === 0 ? (
+        <div className="no-favourites-message">
+          Улюблених фільмів за обраними критеріями немає.
+        </div>
+      ) : (
         <div className="movie-grid">
-          {displayedFilms.map((movie) => (
+          {displayedFilms.map(movie => (
             <MovieCard
               key={movie.id}
               id={movie.id}
@@ -200,8 +219,6 @@ const CurrentlyPlaying = () => {
             />
           ))}
         </div>
-      ) : (
-        <div className="no-movies-message">Фільмів за обраними критеріями не знайдено.</div>
       )}
       <FilterPanel
         isOpen={isFilterPanelOpen}
@@ -212,4 +229,4 @@ const CurrentlyPlaying = () => {
   );
 };
 
-export default CurrentlyPlaying;
+export default FavouritePage;

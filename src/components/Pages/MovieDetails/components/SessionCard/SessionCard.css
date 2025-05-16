@@ -1,0 +1,36 @@
+.session-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1.25rem 2.5rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.session-card__date {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.session-card__showtimes {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.session-card__title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.session-card__showtime {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}

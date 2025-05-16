@@ -1,36 +1,134 @@
 import React, { useState, useEffect } from "react";
-
 import { useParams } from "react-router-dom";
 import MovieHero from "./components/MovieHero/MovieHero";
 import TrailerSection from "./components/TrailerSection/TrailerSection";
 import "./MovieDetailsPage.css";
 import bgImage from "../../../assets/image.png";
 import ActorCarousel from "./components/ActorCarousel/ActorCarousel";
+import SessionsSidebar from "./components/SessionsSidebar/SessionsSidebar";
+import { useForm } from "../../../context/FormProvider.jsx";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const localStorageKey = `favorite_movie_${movieId}`;
-
-  const getInitialFavoriteState = () => {
+  const [isFavorite, setIsFavorite] = useState(() => {
     const storedValue = localStorage.getItem(localStorageKey);
     return storedValue === "true";
-  };
+  });
 
-  const [isFavorite, setIsFavorite] = useState(getInitialFavoriteState);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [scheduleData, setScheduleData] = useState([]);
+  const [movieStorage, setMovieStorage] = useState(null);
+
+  const { openForm } = useForm();
+
+  useEffect(() => {
+    const deletedMovies = JSON.parse(
+      localStorage.getItem("deletedMovies") || "[]"
+    );
+    if (deletedMovies.includes(movieId)) {
+      window.location.href = "/"; // redirect if deleted
+    }
+  }, [movieId]);
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, String(isFavorite));
   }, [isFavorite, localStorageKey]);
 
+  useEffect(() => {
+    const loadFilteredSchedule = () => {
+      const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+      const filteredSchedule = allSchedules.filter(
+        (item) => item.film_id === movieId
+      );
+      setScheduleData(filteredSchedule);
+    };
+    loadFilteredSchedule();
+  }, [movieId]);
+
   const handleSessionsClick = () => {
-    console.log("Go to sessions for movie:", movieId);
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsSidebarOpen((prev) => !prev);
+      setIsClosing(false);
+    }, 300);
   };
 
   const handleFavoriteClick = () => {
-    setIsFavorite((currentIsFavorite) => !currentIsFavorite);
+    setIsFavorite((prev) => !prev);
+  };
+
+  const handleScheduleUpdate = (updatedSchedule) => {
+    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    const otherSchedules = allSchedules.filter(
+      (item) => item.film_id !== movieId
+    );
+    const newAllSchedules = [...otherSchedules, ...updatedSchedule];
+    localStorage.setItem("allSchedules", JSON.stringify(newAllSchedules));
+    setScheduleData(updatedSchedule);
+  };
+
+  const handleDeleteMovie = (id) => {
+    const deletedMovies = JSON.parse(
+      localStorage.getItem("deletedMovies") || "[]"
+    );
+    if (!deletedMovies.includes(id)) {
+      deletedMovies.push(id);
+      localStorage.setItem("deletedMovies", JSON.stringify(deletedMovies));
+    }
+    window.location.href = "/";
+  };
+
+  useEffect(() => {
+    const loadMovie = () => {
+      const moviesFromStorage = localStorage.getItem("currentlyPlaying");
+      const parsedMovies = JSON.parse(moviesFromStorage) || [];
+      const movie = parsedMovies.find((m) => m.id === movieId);
+      if (movie) {
+        setMovieStorage(movie);
+      } else {
+        const deletedMovies = JSON.parse(
+          localStorage.getItem("deletedMovies") || "[]"
+        );
+        if (!deletedMovies.includes(movieId)) {
+          console.warn(`Movie with ID ${movieId} not found. Redirecting...`);
+        }
+      }
+    };
+
+    loadMovie(); // Initial load
+
+    const handleMoviesUpdate = (event) => {
+      const { updatedMovie, mode, deletedMovieId } = event.detail;
+      if (mode === "edit" && updatedMovie && updatedMovie.id === movieId) {
+        setMovieStorage(updatedMovie);
+      }
+    };
+
+    document.addEventListener("moviesUpdated", handleMoviesUpdate);
+
+    return () => {
+      document.removeEventListener("moviesUpdated", handleMoviesUpdate);
+    };
+  }, [movieId]);
+
+  if (!movieStorage) {
+    const deletedMovies = JSON.parse(
+      localStorage.getItem("deletedMovies") || "[]"
+    );
+    if (deletedMovies.includes(movieId)) {
+      return <div className="movie-hero-section loading">Redirecting...</div>;
+    }
+    return <div className="movie-hero-section loading">Loading...</div>;
+  }
+
+  const handleEditMovie = () => {
+    openForm("edit", movieStorage);
   };
 
   const movieData = {
+    id: movieId,
     title: "A Minecraft Movie",
     year: 2025,
     ageRating: "16+",
@@ -85,11 +183,21 @@ const MovieDetailsPage = () => {
 
   return (
     <div className="movie-details-page">
+      <SessionsSidebar
+        isOpen={isSidebarOpen}
+        onClose={handleSessionsClick}
+        isClosing={isClosing}
+        schedule={scheduleData}
+        onScheduleUpdate={handleScheduleUpdate}
+        movieId={movieId} // Передаємо movieId в SessionsSidebar
+      />
       <MovieHero
-        movie={movieData}
+        movie={movieStorage}
         isFavorite={isFavorite}
         onSessionsClick={handleSessionsClick}
         onFavoriteClick={handleFavoriteClick}
+        onDeleteMovie={handleDeleteMovie}
+        onEditMovie={handleEditMovie}
       />
       <TrailerSection videoId={movieData.trailerVideoId} />
       <ActorCarousel cast={movieData.cast} />
