@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import "./MainPage.css";
 import cinemaImg from "../../../assets/cinema.png";
 import MovieCarousel from "../../MovieCarousel/MovieCarousel.jsx";
 import BannerCarousel from "./BannerCarousel/BannerCarousel.jsx";
+import "./MainPage.css";
 
 const MainPage = () => {
     const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(0);

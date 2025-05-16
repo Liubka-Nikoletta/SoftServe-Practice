@@ -9,6 +9,7 @@
   overflow: hidden;
   padding: 20px 40px 60px 40px;
   box-sizing: border-box;
+  transition: background-image 0.8s ease-in-out;
 }
 
 .hero-backdrop {

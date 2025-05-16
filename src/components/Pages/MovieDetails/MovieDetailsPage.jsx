@@ -29,6 +29,16 @@ const MovieDetailsPage = () => {
     localStorage.setItem(localStorageKey, String(isFavorite));
   }, [isFavorite, localStorageKey]);
 
+  const getAbsoluteImageUrl = (relativePath) => {
+    if (!relativePath) return '';
+
+    if (relativePath.startsWith('http') || relativePath.startsWith('/')) {
+      return relativePath;
+    }
+
+    return `/${relativePath}`;
+  };
+
   useEffect(() => {
     setIsLoading(true);
     setError(null);
@@ -53,7 +63,7 @@ const MovieDetailsPage = () => {
               id: foundActor.id,
               name: `${foundActor.name} ${foundActor.surname}`,
               character: foundActor.role,
-              imageUrl: foundActor.photo,
+              imageUrl: getAbsoluteImageUrl(foundActor.photo),
             };
           }
           console.warn(
@@ -91,8 +101,8 @@ const MovieDetailsPage = () => {
         description: foundMovie.description,
         buyPrice: formatPrice(foundMovie.ticket_price),
         rating: foundMovie.rating,
-        posterUrl: foundMovie.poster,
-        heroImageUrl: foundMovie.background_image,
+        posterUrl: getAbsoluteImageUrl(foundMovie.poster),
+        heroImageUrl: getAbsoluteImageUrl(foundMovie.background_image),
         trailerVideoId: getVideoIdFromUrl(foundMovie.trailer_url),
         cast: actorDetails,
       };

@@ -3,280 +3,280 @@
     "id": "actor-1",
     "name": "Том",
     "surname": "Харлі",
-    "photo": "/images/actors/actor-1.jpg",
+    "photo": "src/assets/actors/actor-1.jpg",
     "role": "Валкер"
   },
   {
     "id": "actor-2",
     "name": "Джессі",
     "surname": "Мей Лі",
-    "photo": "/images/actors/actor-2.jpg",
+    "photo": "src/assets/actors/actor-2.jpg",
     "role": "Еллі Софер"
   },
   {
     "id": "actor-3",
     "name": "Тімоті",
     "surname": "Оліфант",
-    "photo": "/images/actors/actor-3.jpg",
+    "photo": "src/assets/actors/actor-3.jpg",
     "role": "Вінсент Кроулі"
   },
   {
     "id": "actor-4",
     "name": "Форест",
     "surname": "Уитакер",
-    "photo": "/images/actors/actor-4.jpg",
+    "photo": "src/assets/actors/actor-4.jpg",
     "role": "Лоуренс Бомонт"
   },
   {
     "id": "actor-5",
     "name": "Наргес",
     "surname": "Рашиді",
-    "photo": "/images/actors/actor-5.jpg",
+    "photo": "src/assets/actors/actor-5.jpg",
     "role": "Хелена"
   },
   {
     "id": "actor-6",
     "name": "Наталія",
     "surname": "Денисенко",
-    "photo": "/images/actors/actor-6.jpg",
+    "photo": "src/assets/actors/actor-6.jpg",
     "role": "Ксенія"
   },
   {
     "id": "actor-7",
     "name": "Тарас",
     "surname": "Цимбалюк",
-    "photo": "/images/actors/actor-7.jpg",
+    "photo": "src/assets/actors/actor-7.jpg",
     "role": "Марк"
   },
   {
     "id": "actor-8",
     "name": "Хижняк",
     "surname": "Антоніна",
-    "photo": "/images/actors/actor-8.jpg",
+    "photo": "src/assets/actors/actor-8.jpg",
     "role": "Лора"
   },
   {
     "id": "actor-9",
     "name": "Павло",
     "surname": "Текучев",
-    "photo": "/images/actors/actor-9.jpg",
+    "photo": "src/assets/actors/actor-9.jpg",
     "role": "Тео"
   },
   {
     "id": "actor-10",
     "name": "Яна",
     "surname": "Рай",
-    "photo": "/images/actors/actor-10.jpg",
+    "photo": "src/assets/actors/actor-10.jpg",
     "role": "Марин"
   },
   {
     "id": "actor-11",
     "name": "Віола",
     "surname": "Девіс",
-    "photo": "/images/actors/actor-11.jpg",
+    "photo": "src/assets/actors/actor-11.jpg",
     "role": "Даніель Саттон"
   },
   {
     "id": "actor-12",
     "name": "Рамон",
     "surname": "Родрігез",
-    "photo": "/images/actors/actor-12.jpg",
+    "photo": "src/assets/actors/actor-12.jpg",
     "role": "Менні Руіз"
   },
   {
     "id": "actor-13",
     "name": "Ентоні",
     "surname": "Старр",
-    "photo": "/images/actors/actor-13.jpg",
+    "photo": "src/assets/actors/actor-13.jpg",
     "role": "Дерек Саттон"
   },
   {
     "id": "actor-14",
     "name": "Елізабет",
     "surname": "Марвел",
-    "photo": "/images/actors/actor-14.jpg",
+    "photo": "src/assets/actors/actor-14.jpg",
     "role": "Джоанна Уорт"
   },
   {
     "id": "actor-15",
     "name": "Кларк",
     "surname": "Грегг",
-    "photo": "/images/actors/actor-15.jpg",
+    "photo": "src/assets/actors/actor-15.jpg",
     "role": "Гарольд Мозлі"
   },
   {
     "id": "actor-16",
     "name": "Міллі Боббі",
     "surname": "Браун",
-    "photo": "/images/actors/actor-16.jpg",
+    "photo": "src/assets/actors/actor-16.jpg",
     "role": "Мішель Грін"
   },
   {
     "id": "actor-17",
     "name": "Ентоні",
     "surname": "Макі",
-    "photo": "/images/actors/actor-17.jpg",
+    "photo": "src/assets/actors/actor-17.jpg",
     "role": "Херман"
   },
   {
     "id": "actor-18",
     "name": "Стенлі",
     "surname": "Туччі",
-    "photo": "/images/actors/actor-18.jpg",
+    "photo": "src/assets/actors/actor-18.jpg",
     "role": "Етан Скейт"
   },
   {
     "id": "actor-19",
     "name": "Дженні",
     "surname": "Слейт",
-    "photo": "/images/actors/actor-19.jpg",
+    "photo": "src/assets/actors/actor-19.jpg",
     "role": "Пенні Пал"
   },
   {
     "id": "actor-20",
     "name": "Джанкарло",
     "surname": "Еспозіто",
-    "photo": "/images/actors/actor-20.jpg",
+    "photo": "src/assets/actors/actor-20.jpg",
     "role": "Маршал Бред"
   },
   {
     "id": "actor-21",
     "name": "Ентоні",
     "surname": "Макі",
-    "photo": "/images/actors/actor-17.jpg",
+    "photo": "src/assets/actors/actor-17.jpg",
     "role": "Сем Уілсон"
   },
   {
     "id": "actor-22",
     "name": "Денні",
     "surname": "Рамірес",
-    "photo": "/images/actors/actor-22.jpg",
+    "photo": "src/assets/actors/actor-22.jpg",
     "role": "Джоакін Торрес"
   },
   {
     "id": "actor-23",
     "name": "Гаррісон",
     "surname": "Форд",
-    "photo": "/images/actors/actor-23.jpg",
+    "photo": "src/assets/actors/actor-23.jpg",
     "role": "Генерал Таддеус"
   },
   {
     "id": "actor-24",
     "name": "Джанкарло",
     "surname": "Еспозіто",
-    "photo": "/images/actors/actor-20.jpg",
+    "photo": "src/assets/actors/actor-20.jpg",
     "role": "Сет Велкер"
   },
   {
     "id": "actor-25",
     "name": "Лів",
     "surname": "Тайлер",
-    "photo": "/images/actors/actor-25.jpg",
+    "photo": "src/assets/actors/actor-25.jpg",
     "role": "Бетті Рос"
   },
   {
     "id": "actor-26",
     "name": "Софі",
     "surname": "Тетчер",
-    "photo": "/images/actors/actor-26.jpg",
+    "photo": "src/assets/actors/actor-26.jpg",
     "role": "Айріс"
   },
   {
     "id": "actor-27",
     "name": "Джек",
     "surname": "Куейд",
-    "photo": "/images/actors/actor-27.jpg",
+    "photo": "src/assets/actors/actor-27.jpg",
     "role": "Джош"
   },
   {
     "id": "actor-28",
     "name": "Лукас",
     "surname": "Гейдж",
-    "photo": "/images/actors/actor-28.jpg",
+    "photo": "src/assets/actors/actor-28.jpg",
     "role": "Патрік"
   },
   {
     "id": "actor-29",
     "name": "Меган",
     "surname": "Сурі",
-    "photo": "/images/actors/actor-29.jpg",
+    "photo": "src/assets/actors/actor-29.jpg",
     "role": "Кет"
   },
   {
     "id": "actor-30",
     "name": "Руперт",
     "surname": "Френд",
-    "photo": "/images/actors/actor-30.jpg",
+    "photo": "src/assets/actors/actor-30.jpg",
     "role": "Сергій"
   },
   {
     "id": "actor-31",
     "name": "Чейз",
     "surname": "Стокс",
-    "photo": "/images/actors/actor-31.jpg",
+    "photo": "src/assets/actors/actor-31.jpg",
     "role": "Рул Арчер"
   },
   {
     "id": "actor-32",
     "name": "Сідні",
     "surname": "Тейлор",
-    "photo": "/images/actors/actor-32.jpg",
+    "photo": "src/assets/actors/actor-32.jpg",
     "role": "Шоу Лендон"
   },
   {
     "id": "actor-33",
     "name": "Елла",
     "surname": "Балінська",
-    "photo": "/images/actors/actor-33.jpg",
+    "photo": "src/assets/actors/actor-33.jpg",
     "role": "Айден Крос"
   },
   {
     "id": "actor-34",
     "name": "Еван",
     "surname": "Мок",
-    "photo": "/images/actors/actor-34.jpg",
+    "photo": "src/assets/actors/actor-34.jpg",
     "role": "Джет Теллер"
   },
   {
     "id": "actor-35",
     "name": "Александр",
     "surname": "Людвіг",
-    "photo": "/images/actors/actor-35.jpg",
+    "photo": "src/assets/actors/actor-35.jpg",
     "role": "Ром Арчер"
   },
   {
     "id": "actor-36",
     "name": "Роберт",
     "surname": "Паттінсон",
-    "photo": "/images/actors/actor-36.jpg",
+    "photo": "src/assets/actors/actor-36.jpg",
     "role": "Міккі Барнз"
   },
   {
     "id": "actor-37",
     "name": "Наомі",
     "surname": "Аккі",
-    "photo": "/images/actors/actor-37.jpg",
+    "photo": "src/assets/actors/actor-37.jpg",
     "role": "Наша Баррідж"
   },
   {
     "id": "actor-38",
     "name": "Марк",
     "surname": "Раффало",
-    "photo": "/images/actors/actor-38.jpg",
+    "photo": "src/assets/actors/actor-38.jpg",
     "role": "Кенет Маршал"
   },
   {
     "id": "actor-39",
     "name": "Тоні",
     "surname": "Коллет",
-    "photo": "/images/actors/actor-39.jpg",
+    "photo": "src/assets/actors/actor-39.jpg",
     "role": "Іфа"
   },
   {
     "id": "actor-40",
     "name": "Стівен",
     "surname": "Юн",
-    "photo": "/images/actors/actor-40.jpg",
+    "photo": "src/assets/actors/actor-40.jpg",
     "role": "Тімо"
   },
   {
