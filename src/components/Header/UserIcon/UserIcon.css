@@ -35,7 +35,7 @@
 
 .user-dropdown {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 2px);
     right: 0;
     width: 200px;
     background-color: white;
