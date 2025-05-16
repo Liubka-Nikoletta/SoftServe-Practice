@@ -12,7 +12,7 @@ const MainPage = () => {
   const [currentlyPlayingFilms, setCurrentlyPlayingFilms] = useState([]);
   const [comingSoonFilms, setComingSoonFilms] = useState([]);
   const [favoriteFilms, setFavoriteFilms] = useState([]);
-  const [allSchedules, setAllSchedules] = useState([]); // Додано стан для всіх сеансів
+  const [allSchedules, setAllSchedules] = useState([]);
 
   const loadMovieData = async () => {
     console.log("[MainPage.jsx] loadMovieData called");
@@ -20,7 +20,6 @@ const MainPage = () => {
       localStorage.getItem("deletedMovies") || "[]"
     );
 
-    // Завантаження "Зараз в прокаті"
     const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
     let rawCurrentlyPlaying = [];
     if (storedCurrentlyPlaying) {
@@ -43,7 +42,6 @@ const MainPage = () => {
     );
     setCurrentlyPlayingFilms(filteredCurrentlyPlaying.slice(0, 8));
 
-    // Завантаження "Скоро в прокаті"
     const storedComingSoon = localStorage.getItem("comingSoon");
     let rawComingSoon = [];
     if (storedComingSoon) {
@@ -63,7 +61,6 @@ const MainPage = () => {
     );
     setComingSoonFilms(filteredComingSoon.slice(0, 8));
 
-    // Завантаження "Улюблені фільми"
     const allMoviesMap = new Map();
     [
       ...(Array.isArray(rawCurrentlyPlaying) ? rawCurrentlyPlaying : []),

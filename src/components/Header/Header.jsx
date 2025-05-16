@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Header.css";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../Button/Button.jsx";
-import SearchSuggestions from "../Search/SearchSuggestions";
+import SearchSuggestions from "./Search/SearchSuggestions";
 import UserIcon from "./UserIcon/UserIcon";
 import { useForm } from "../../context/FormProvider.jsx";
 
