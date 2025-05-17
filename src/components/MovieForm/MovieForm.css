@@ -57,13 +57,13 @@
   gap: 0.62rem;
 }
 
-.movie-form__two-columns {
+.movie-form__columns {
   display: flex;
   gap: 0.625rem;
   width: 100%;
 }
 
-.movie-form__two-columns .form-field {
+.movie-form__columns .form-field {
   align-self: stretch;
   width: 100%;
 }
