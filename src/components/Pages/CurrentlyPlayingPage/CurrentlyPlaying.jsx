@@ -86,63 +86,75 @@ const CurrentlyPlaying = () => {
     console.log("Застосовані фільтри в CurrentlyPlaying:", filters);
     let filteredMovies = [...allCurrentlyPlayingFilms];
     const currentYearForSchedule = new Date().getFullYear();
-
+  
     const { sessionDateFilter, sessionStartTime, sessionEndTime } = filters;
     const targetDateString = getTargetDateString(sessionDateFilter.type, sessionDateFilter.date);
-
+  
     if (targetDateString || (sessionStartTime > 0 || sessionEndTime < (24 * 60 - 1))) {
-        filteredMovies = filteredMovies.filter(movie => {
-            if (!movie || !movie.id) return false;
-            const movieSchedules = schedules.filter(s => s.film_id === movie.id);
-            if (!movieSchedules.length) return false;
-
-            return movieSchedules.some(schedule => {
-                let scheduleDateMatches = !targetDateString; 
-                if (targetDateString) {
-                    const scheduleMonthStr = schedule.month ? schedule.month.toLowerCase() : '';
-                    const scheduleMonthNum = monthMap[scheduleMonthStr];
-                    if (!scheduleMonthNum) return false;
-
-                    const scheduleDayPadded = schedule.day.toString().padStart(2, '0');
-                    const scheduleFullDate = `${currentYearForSchedule}-${scheduleMonthNum}-${scheduleDayPadded}`;
-                    scheduleDateMatches = scheduleFullDate === targetDateString;
-                }
-                if (targetDateString && !scheduleDateMatches) return false;
-                const isTimeFiltered = sessionStartTime > 0 || sessionEndTime < (24 * 60 - 1);
-                if (!isTimeFiltered) return scheduleDateMatches; 
-
-                if (!schedule.showtimes || schedule.showtimes.length === 0) return false;
-
-                return schedule.showtimes.some(timeStr => {
-                    const [hours, minutes] = timeStr.split(':').map(Number);
-                    const timeInMinutes = hours * 60 + minutes;
-                    return timeInMinutes >= sessionStartTime && timeInMinutes <= sessionEndTime;
-                });
-            });
+      filteredMovies = filteredMovies.filter(movie => {
+        if (!movie || !movie.id) return false;
+        const movieSchedules = schedules.filter(s => s.film_id === movie.id);
+        if (!movieSchedules.length) return false;
+  
+        return movieSchedules.some(schedule => {
+          let scheduleDateMatches = !targetDateString;
+          if (targetDateString) {
+            const scheduleMonthStr = schedule.month ? schedule.month.toLowerCase() : '';
+            const scheduleMonthNum = monthMap[scheduleMonthStr];
+            if (!scheduleMonthNum) return false;
+  
+            const scheduleDayPadded = schedule.day.toString().padStart(2, '0');
+            const scheduleFullDate = `${currentYearForSchedule}-${scheduleMonthNum}-${scheduleDayPadded}`;
+            scheduleDateMatches = scheduleFullDate === targetDateString;
+          }
+          if (targetDateString && !scheduleDateMatches) return false;
+          const isTimeFiltered = sessionStartTime > 0 || sessionEndTime < (24 * 60 - 1);
+          if (!isTimeFiltered) return scheduleDateMatches;
+  
+          if (!schedule.showtimes || schedule.showtimes.length === 0) return false;
+  
+          return schedule.showtimes.some(timeStr => {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const timeInMinutes = hours * 60 + minutes;
+            return timeInMinutes >= sessionStartTime && timeInMinutes <= sessionEndTime;
+          });
         });
+      });
     }
-
+  
     filteredMovies = filteredMovies.filter(movie => movie.rating >= filters.minRating && movie.rating <= filters.maxRating);
-
+  
     if (filters.genres && filters.genres.length > 0) {
       filteredMovies = filteredMovies.filter(movie => {
         const movieGenres = Array.isArray(movie.genre) ? movie.genre : [movie.genre].filter(Boolean);
         return filters.genres.some(selectedGenre => movieGenres.includes(selectedGenre));
       });
     }
+
     if (filters.ageRatings && filters.ageRatings.length > 0) {
-      filteredMovies = filteredMovies.filter(movie => filters.ageRatings.includes(movie.age));
+      const selectedAges = filters.ageRatings.map(age => parseInt(age.replace('+', ''), 10)).sort((a, b) => a - b);
+  
+      filteredMovies = filteredMovies.filter(movie => {
+        const movieAge = parseInt(movie.age.replace('+', ''), 10);
+        if (selectedAges.length === 1) {
+          return movieAge >= selectedAges[0];
+        } else if (selectedAges.length > 1) {
+          return movieAge >= selectedAges[0] && movieAge <= selectedAges[selectedAges.length - 1];
+        }
+        return true; 
+      });
     }
+  
     if (filters.sortBy) {
       const parseDate = (dateStr) => {
-        if (!dateStr || typeof dateStr !== 'string') return new Date(0); 
+        if (!dateStr || typeof dateStr !== 'string') return new Date(0);
         const parts = dateStr.split('.');
         if (parts.length === 3) {
           return new Date(parts[2], parts[1] - 1, parts[0]);
         }
-        return new Date(0); 
+        return new Date(0);
       };
-
+  
       switch (filters.sortBy) {
         case 'newest':
           filteredMovies.sort((a, b) => parseDate(b.release_date) - parseDate(a.release_date));
@@ -168,8 +180,6 @@ const CurrentlyPlaying = () => {
     }
     setDisplayedFilms(filteredMovies);
   }, [allCurrentlyPlayingFilms, schedules]);
-
-
   if (loading) {
     return <div className="currently-playing">Завантаження фільмів...</div>;
   }

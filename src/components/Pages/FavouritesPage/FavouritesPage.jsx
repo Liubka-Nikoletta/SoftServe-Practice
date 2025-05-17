@@ -126,7 +126,7 @@ const FavouritePage = () => {
 
                 const isTimeFiltered = sessionStartTime > 0 || sessionEndTime < (24 * 60 - 1);
                 if (!isTimeFiltered) return scheduleDateMatches;
-                
+
                 if (!schedule.showtimes || schedule.showtimes.length === 0) return false;
 
                 return schedule.showtimes.some(timeStr => {
@@ -146,9 +146,18 @@ const FavouritePage = () => {
         return filters.genres.some(selectedGenre => movieGenres.includes(selectedGenre));
       });
     }
-
     if (filters.ageRatings && filters.ageRatings.length > 0) {
-      filteredMovies = filteredMovies.filter(movie => filters.ageRatings.includes(movie.age));
+      const selectedAges = filters.ageRatings.map(age => parseInt(age.replace('+', ''), 10)).sort((a, b) => a - b);
+
+      filteredMovies = filteredMovies.filter(movie => {
+        const movieAge = parseInt(movie.age.replace('+', ''), 10);
+        if (selectedAges.length === 1) {
+          return movieAge >= selectedAges[0];
+        } else if (selectedAges.length > 1) {
+          return movieAge >= selectedAges[0] && movieAge <= selectedAges[selectedAges.length - 1];
+        }
+        return true; 
+      });
     }
 
     if (filters.sortBy) {
