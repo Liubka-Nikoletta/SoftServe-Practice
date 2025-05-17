@@ -1,0 +1,9 @@
+.star-rating__container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(29, 29, 29, 0.15);
+  padding: 0.25rem 0.625rem !important;
+  height: 2rem !important;
+  border-radius: 0.5rem !important;
+}

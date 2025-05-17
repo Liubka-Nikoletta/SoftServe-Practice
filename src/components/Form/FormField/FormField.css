@@ -18,3 +18,16 @@
   background: rgba(29, 29, 29, 0.15) !important;
   width: auto !important;
 }
+
+select.form-field__input {
+  font-size: inherit;
+  height: 2.5rem !important;
+}
+
+select.form-field__input:hover {
+  box-shadow: 0 0 10px 2px #8b2635;
+}
+
+select.form-field__input:focus {
+  box-shadow: 0 0 10px 2px #8b2635;
+}
