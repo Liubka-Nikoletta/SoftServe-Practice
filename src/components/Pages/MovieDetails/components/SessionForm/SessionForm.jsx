@@ -1,23 +1,68 @@
 import { useState, useEffect } from "react";
-import FormField from "../../../../FormField/FormField";
-import FormSubmit from "../../../../FormSubmit/FormSubmit";
+import FormField from "../../../../Form/FormField/FormField";
+import FormSubmit from "../../../../Form/FormSubmit/FormSubmit";
 import Button from "../../../../Button/Button";
 import "./SessionForm.css";
 
+const ukrainianMonthsArray = [
+  "Січень",
+  "Лютий",
+  "Березень",
+  "Квітень",
+  "Травень",
+  "Червень",
+  "Липень",
+  "Серпень",
+  "Вересень",
+  "Жовтень",
+  "Листопад",
+  "Грудень",
+];
+
+const getMonthNumberFromName = (monthName) => {
+  const index = ukrainianMonthsArray.findIndex(
+    (m) => m.toLowerCase() === monthName.toLowerCase()
+  );
+  return index !== -1 ? index + 1 : null;
+};
+
+const getMonthNameFromStandardMonth = (monthOneBased) => {
+  // monthOneBased це 1-12
+  if (monthOneBased >= 1 && monthOneBased <= 12) {
+    return ukrainianMonthsArray[monthOneBased - 1];
+  }
+  return "";
+};
+
 const SessionForm = ({ onClose, onSubmit, mode, initialData }) => {
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [time, setTime] = useState("");
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
-      setDay(String(initialData.day || ""));
-      setMonth(initialData.month || "");
-      setTime(initialData.originalTime || "");
+      const day = initialData.day;
+      const monthName = initialData.month;
+      const initialTime = initialData.originalTime || "";
+
+      if (day && monthName) {
+        const monthNumber = getMonthNumberFromName(monthName);
+        if (monthNumber) {
+          const year = new Date().getFullYear();
+          const formattedDate = `${year}-${String(monthNumber).padStart(
+            2,
+            "0"
+          )}-${String(day).padStart(2, "0")}`;
+          setSelectedDate(formattedDate);
+        } else {
+          setSelectedDate("");
+        }
+      } else {
+        setSelectedDate("");
+      }
+      setTime(initialTime);
     } else {
-      setDay("");
-      setMonth("");
+      setSelectedDate("");
       setTime("");
     }
     setErrors({});
@@ -25,14 +70,16 @@ const SessionForm = ({ onClose, onSubmit, mode, initialData }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!day.trim()) newErrors.day = "Day is required";
-    else if (isNaN(day) || parseInt(day) < 1 || parseInt(day) > 31) {
-      newErrors.day = "Invalid day";
+    if (!selectedDate.trim()) {
+      newErrors.date = "Date is required";
+    } else if (isNaN(new Date(selectedDate).getTime())) {
+      newErrors.date = "Invalid date format";
     }
-    if (!month.trim()) newErrors.month = "Month is required";
-    if (!time.trim()) newErrors.time = "Time is required";
-    else if (!/^\d{2}:\d{2}$/.test(time)) {
-      newErrors.time = "Invalid time format (HH:MM)";
+
+    if (!time.trim()) {
+      newErrors.time = "Time is required";
+    } else if (!/^\d{2}:\d{2}$/.test(time)) {
+      newErrors.time = "Invalid time format. Use HH:MM";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -41,7 +88,13 @@ const SessionForm = ({ onClose, onSubmit, mode, initialData }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit({ day, month, time });
+      const [year, monthStr, dayStr] = selectedDate.split("-");
+      const day = parseInt(dayStr, 10);
+      const monthNumber = parseInt(monthStr, 10);
+
+      const monthName = getMonthNameFromStandardMonth(monthNumber);
+
+      onSubmit({ day: String(day), month: monthName, time });
     }
   };
 
@@ -50,28 +103,17 @@ const SessionForm = ({ onClose, onSubmit, mode, initialData }) => {
       <div className="session-form" onClick={(e) => e.stopPropagation()}>
         <div className="session-form__header">
           <h2 className="session-form__title">
-            {mode === "add" ? "Add New" : "Edit"} Session
+            {mode === "add" ? "Add New" : "Edit"} session
           </h2>
           <Button icon="fa-close" size="small" onClick={onClose} />
         </div>
         <form onSubmit={handleSubmit} className="session-form__form">
           <FormField
-            label="Day"
-            type="number"
-            value={day}
-            onChange={(e) => setDay(e.target.value)}
-            placeholder="e.g., 27"
-            errorMessage={errors.day}
-            isRequired
-            isDisabled={mode === "edit"}
-          />
-          <FormField
-            label="Month"
-            type="text"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            placeholder="e.g., April"
-            errorMessage={errors.month}
+            label="Date"
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            errorMessage={errors.date}
             isRequired
             isDisabled={mode === "edit"}
           />
@@ -80,7 +122,7 @@ const SessionForm = ({ onClose, onSubmit, mode, initialData }) => {
             type="time"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            placeholder="e.g., 14:30"
+            placeholder="напр., 14:30"
             errorMessage={errors.time}
             isRequired
           />

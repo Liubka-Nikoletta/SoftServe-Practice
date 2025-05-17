@@ -1,0 +1,15 @@
+.star-rating__star {
+  font-size: 20px;
+  color: #e0e0e0;
+  margin-right: 3px;
+  transition: color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  color: #000;
+}
+
+.star-rating__star:not(.disabled) {
+  cursor: pointer;
+}
+
+.star-rating__star:not(.disabled):hover {
+  transform: scale(1.15);
+}
