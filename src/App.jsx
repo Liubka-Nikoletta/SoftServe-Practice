@@ -7,8 +7,10 @@ import MovieDetailsPage from "./components/Pages/MovieDetails/MovieDetailsPage.j
 import MainPage from "./components/Pages/Main/MainPage.jsx";
 import LoginPage from "./components/Pages/Login/LoginPage.jsx";
 import CurrentlyPlaying from "./components/Pages/CurrentlyPlayingPage/CurrentlyPlaying.jsx";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { FormProvider, useForm } from "./context/FormProvider.jsx";
+import { ToastContainer } from "react-toastify";
 import MovieForm from "./components/MovieForm/MovieForm.jsx";
 
 import "./App.css";
@@ -117,6 +119,18 @@ function AppContent() {
           mode={formMode}
           initialData={currentEditingSession}
           onSubmit={handleMovieSubmit}
+        />
+        <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
         />
       </div>
     </Router>

@@ -6,101 +6,85 @@ const UserIcon = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
-    const dropdownRef = useRef(null);
-    const buttonRef = useRef(null);
+    const containerRef = useRef(null);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         function checkAuth() {
             const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
             setIsLoggedIn(!!user);
             setUserName(user?.name || '');
         }
-        
+
         checkAuth();
-        
+
         const handleAuthChange = () => {
             checkAuth();
         };
-        
+
         document.addEventListener('authStatusChanged', handleAuthChange);
-        
+
         return () => {
             document.removeEventListener('authStatusChanged', handleAuthChange);
         };
     }, []);
-    
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (
-                dropdownRef.current && 
-                !dropdownRef.current.contains(event.target) &&
-                buttonRef.current && 
-                !buttonRef.current.contains(event.target)
-            ) {
-                setShowDropdown(false);
-            }
-        }
-        
-        if (showDropdown) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-        
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [showDropdown]);
-    
-    const toggleDropdown = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setShowDropdown(prev => !prev);
-    };
-    
+
     const handleLogout = (e) => {
         e.preventDefault();
-        
+
         localStorage.removeItem('currentUser');
-        
         document.dispatchEvent(new CustomEvent('authStatusChanged'));
-        
         navigate('/login');
     };
-    
+
+    const handleMouseLeave = (e) => {
+        if (!containerRef.current) return;
+
+        const related = e.relatedTarget;
+        if (related && containerRef.current.contains(related)) {
+            return;
+        }
+
+        setShowDropdown(false);
+    };
+
     return (
-        <div className="user-icon-container">
+        <div
+            className="user-icon-container"
+            ref={containerRef}
+            onMouseEnter={() => setShowDropdown(true)}
+            onMouseLeave={handleMouseLeave}
+        >
             {isLoggedIn ? (
                 <>
-                    <button 
-                        ref={buttonRef}
-                        className="user-button" 
-                        onClick={toggleDropdown}
+                    <button
+                        className="user-button"
                         aria-label="User menu"
                     >
                         <i className="fa-solid fa-user"></i>
                     </button>
-                    
+
                     {showDropdown && (
-                        <div ref={dropdownRef} className="user-dropdown">
+                        <div className="user-dropdown">
                             <div className="user-dropdown-header">
                                 <span className="user-name">{userName}</span>
                             </div>
                             <div className="user-dropdown-menu">
-                                <Link 
-                                    to="/profile" 
+                                <Link
+                                    to="/profile"
                                     className="dropdown-item"
                                     onClick={() => setShowDropdown(false)}
                                 >
                                     My Profile
                                 </Link>
-                                <Link 
-                                    to="/tickets" 
+                                <Link
+                                    to="/tickets"
                                     className="dropdown-item"
                                     onClick={() => setShowDropdown(false)}
                                 >
                                     My Tickets
                                 </Link>
-                                <button 
+                                <button
                                     className="dropdown-item logout"
                                     onClick={handleLogout}
                                 >

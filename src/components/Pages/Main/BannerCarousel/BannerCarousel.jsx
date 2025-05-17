@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./BannerCarousel.css";
 import Button from "../../../Button/Button.jsx";
+import { useFavorite } from "../../../../hooks/useFavorite.js";
 
 const AUTO_SCROLL_INTERVAL = 5000;
 
 const BannerCarousel = ({ films }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const currentFilm = films[currentSlide];
+
+    const { isLiked, toggleLike } = useFavorite(currentFilm?.id);
 
     useEffect(() => {
         if (films.length === 0) return;
@@ -17,8 +21,6 @@ const BannerCarousel = ({ films }) => {
         return () => clearInterval(interval);
     }, [films]);
 
-    if (!films || films.length === 0) return null;
-
     const handlePrev = () => {
         setCurrentSlide((prev) => (prev - 1 + films.length) % films.length);
     };
@@ -27,11 +29,7 @@ const BannerCarousel = ({ films }) => {
         setCurrentSlide((prev) => (prev + 1) % films.length);
     };
 
-    const currentFilm = films[currentSlide];
-
-    if (!currentFilm || !currentFilm.background_image) {
-        return null;
-    }
+    if (!currentFilm || !currentFilm.background_image) return null;
 
     return (
         <div
@@ -49,8 +47,17 @@ const BannerCarousel = ({ films }) => {
                 </div>
                 <p>{currentFilm.description}</p>
                 <div className="hero-buttons">
-                    <Button text="Детально" onClick={() => console.log("Перейти")} size="medium"/>
-                    <Button icon="fa-regular fa-heart" onClick={() => console.log("Like")} size="small"/>
+                    <Button
+                        text="Детально"
+                        onClick={() => console.log("Перейти")}
+                        size="medium"
+                    />
+                    <Button
+                        icon={isLiked ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                        onClick={toggleLike}
+                        size="small"
+                        className={isLiked ? "liked" : ""}
+                    />
                 </div>
             </div>
         </div>
