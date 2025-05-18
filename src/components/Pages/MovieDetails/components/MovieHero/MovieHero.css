@@ -121,7 +121,7 @@
   transform: scale(0.97);
 }
 
-.rating-star {
+/* .rating-star {
   display: inline-block;
   vertical-align: middle;
   font-size: 18px;
@@ -145,12 +145,35 @@
   left: 0;
   height: 100%;
   overflow: hidden;
-  display: block;
   z-index: 1;
 }
 
 .fractional-star-container .filled-part > i.fas.fa-star {
   display: block;
+} */
+
+.rating-star {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  margin: 0 1px;
+  position: relative;
+  color: #fff;
+}
+
+.fractional-star-container {
+  position: relative;
+  display: inline-block;
+}
+
+.fractional-star-container .filled-part {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1;
+  color: #fff;
+  width: 100%;
 }
 
 .admin-movie-actions {
