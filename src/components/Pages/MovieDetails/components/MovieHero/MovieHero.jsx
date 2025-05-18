@@ -10,8 +10,8 @@ const HEART_REGULAR = "far fa-heart";
 
 const renderStars = (ratingValue) => {
   const stars = [];
-  const totalStars = 5;
-  const scaledRating = Math.max(0, Math.min(5, (Number(ratingValue) || 0) / 2));
+  const totalStars = 10;
+  const scaledRating = Math.max(0, Math.min(10, Number(ratingValue) || 0));
   const fullStars = Math.floor(scaledRating);
   const fractionalPart = scaledRating % 1;
 

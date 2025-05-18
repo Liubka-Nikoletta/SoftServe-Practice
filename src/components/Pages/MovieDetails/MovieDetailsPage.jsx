@@ -11,6 +11,13 @@ import "./MovieDetailsPage.css";
 import SessionsSidebar from "./components/SessionsSidebar/SessionsSidebar";
 import { useForm } from "../../../context/FormProvider.jsx";
 
+const getVideoIdFromUrl = (url) => {
+  if (!url || typeof url !== "string") return null;
+  const parts = url.split("/");
+  const potentialId = parts.pop();
+  return potentialId && potentialId.length > 0 ? potentialId : null;
+};
+
 const getAbsoluteImageUrl = (relativePath) => {
   if (!relativePath) return "";
 
@@ -19,19 +26,6 @@ const getAbsoluteImageUrl = (relativePath) => {
   }
 
   return `/${relativePath}`;
-};
-
-const getYearFromDate = (dateString) => {
-  if (!dateString || typeof dateString !== "string") return "N/A";
-  const parts = dateString.split(".");
-  return parts.length === 3 ? parts[2] : dateString;
-};
-
-const getVideoIdFromUrl = (url) => {
-  if (!url || typeof url !== "string") return null;
-  const parts = url.split("/");
-  const potentialId = parts.pop();
-  return potentialId && potentialId.length > 0 ? potentialId : null;
 };
 
 const MovieDetailsPage = () => {
@@ -119,7 +113,7 @@ const MovieDetailsPage = () => {
         const processedMovieData = {
           id: foundMovie.id,
           title: foundMovie.title,
-          release_date: getYearFromDate(foundMovie.release_date),
+          release_date: foundMovie.release_date,
           age: foundMovie.age,
           duration: foundMovie.duration,
           genre: foundMovie.genre,
@@ -128,7 +122,7 @@ const MovieDetailsPage = () => {
           rating: foundMovie.rating,
           poster: getAbsoluteImageUrl(foundMovie.poster),
           background_image: getAbsoluteImageUrl(foundMovie.background_image),
-          trailerVideoId: getVideoIdFromUrl(foundMovie.trailer_url),
+          trailer_url: foundMovie.trailer_url,
           cast: actorDetails,
         };
         console.log(processedMovieData);
@@ -234,8 +228,10 @@ const MovieDetailsPage = () => {
         onDeleteMovie={handleDeleteMovie}
         onEditMovie={handleEditMovie}
       />
-      {currentMovieData.trailerVideoId ? (
-        <TrailerSection videoId={currentMovieData.trailerVideoId} />
+      {currentMovieData.trailer_url ? (
+        <TrailerSection
+          videoId={getVideoIdFromUrl(currentMovieData.trailer_url)}
+        />
       ) : (
         <p className="info">The trailer for this movie is not available.</p>
       )}
