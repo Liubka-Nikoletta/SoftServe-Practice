@@ -121,37 +121,6 @@
   transform: scale(0.97);
 }
 
-/* .rating-star {
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 18px;
-  margin: 0 1px;
-  position: relative;
-  color: #ffffff;
-}
-
-.fractional-star-container {
-  position: relative;
-  display: inline-block;
-}
-
-.fractional-star-container > i.far.fa-star {
-  display: block;
-}
-
-.fractional-star-container .filled-part {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.fractional-star-container .filled-part > i.fas.fa-star {
-  display: block;
-} */
-
 .rating-star {
   display: inline-block;
   vertical-align: middle;
