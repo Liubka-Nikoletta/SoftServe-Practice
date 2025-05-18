@@ -11,6 +11,29 @@ import "./MovieDetailsPage.css";
 import SessionsSidebar from "./components/SessionsSidebar/SessionsSidebar";
 import { useForm } from "../../../context/FormProvider.jsx";
 
+const getAbsoluteImageUrl = (relativePath) => {
+  if (!relativePath) return "";
+
+  if (relativePath.startsWith("http") || relativePath.startsWith("/")) {
+    return relativePath;
+  }
+
+  return `/${relativePath}`;
+};
+
+const getYearFromDate = (dateString) => {
+  if (!dateString || typeof dateString !== "string") return "N/A";
+  const parts = dateString.split(".");
+  return parts.length === 3 ? parts[2] : dateString;
+};
+
+const getVideoIdFromUrl = (url) => {
+  if (!url || typeof url !== "string") return null;
+  const parts = url.split("/");
+  const potentialId = parts.pop();
+  return potentialId && potentialId.length > 0 ? potentialId : null;
+};
+
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const localStorageKey = `favorite_movie_${movieId}`;
@@ -43,107 +66,99 @@ const MovieDetailsPage = () => {
     localStorage.setItem(localStorageKey, String(isFavorite));
   }, [isFavorite, localStorageKey]);
 
-    useEffect(() => {
+  useEffect(() => {
     const loadFilteredSchedule = () => {
-      const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+      const allSchedules = JSON.parse(
+        localStorage.getItem("allSchedules") || "[]"
+      );
       const filteredSchedule = allSchedules.filter(
         (item) => item.film_id === movieId
       );
       setScheduleData(filteredSchedule);
     };
     loadFilteredSchedule();
-  
-  const getAbsoluteImageUrl = (relativePath) => {
-    if (!relativePath) return '';
-
-    if (relativePath.startsWith('http') || relativePath.startsWith('/')) {
-      return relativePath;
-    }
-
-    return `/${relativePath}`;
-  };
+  }, [movieId]);
 
   useEffect(() => {
     setIsLoading(true);
     setError(null);
     setCurrentMovieData(null);
 
-    const moviesFromStorage = localStorage.getItem("currentlyPlaying");
-    const parsedMovies = JSON.parse(moviesFromStorage) || [];
-    let foundMovie = parsedMovies.find((m) => m.id === movieId);
+    const loadMovie = () => {
+      const moviesFromStorage = localStorage.getItem("currentlyPlaying");
+      const parsedMovies = JSON.parse(moviesFromStorage) || [];
+      let foundMovie = parsedMovies.find((m) => m.id === movieId);
 
-    if (!foundMovie) {
-      foundMovie = allComingSoonMoviesData.find(
-        (movie) => movie.id === movieId
-      );
-    }
+      if (!foundMovie) {
+        foundMovie = allComingSoonMoviesData.find(
+          (movie) => movie.id === movieId
+        );
+      }
 
-    if (foundMovie) {
-      const actorDetails = foundMovie.actors
-        .map((actorId) => {
-          const foundActor = allActorsData.find(
-            (actor) => actor.id === actorId
-          );
-          if (foundActor) {
-            return {
-              id: foundActor.id,
-              name: `${foundActor.name} ${foundActor.surname}`,
-              character: foundActor.role,
-              imageUrl: getAbsoluteImageUrl(foundActor.photo),
-            };
-          }
-          console.warn(
-            `Actor with ID "${actorId}" referenced in movie "${foundMovie.title}" not found in actors.json`
-          );
-          return null;
-        })
-        .filter((actor) => actor !== null);
+      if (foundMovie) {
+        const actorDetails = foundMovie.actors
+          .map((actorId) => {
+            const foundActor = allActorsData.find(
+              (actor) => actor.id === actorId
+            );
+            if (foundActor) {
+              return {
+                id: foundActor.id,
+                name: `${foundActor.name} ${foundActor.surname}`,
+                character: foundActor.role,
+                imageUrl: getAbsoluteImageUrl(foundActor.photo),
+              };
+            }
+            console.warn(
+              `Actor with ID "${actorId}" referenced in movie "${foundMovie.title}" not found in actors.json`
+            );
+            return null;
+          })
+          .filter((actor) => actor !== null);
 
-      const getYearFromDate = (dateString) => {
-        if (!dateString || typeof dateString !== "string") return "N/A";
-        const parts = dateString.split(".");
-        return parts.length === 3 ? parts[2] : dateString;
-      };
-
-      const getVideoIdFromUrl = (url) => {
-        if (!url || typeof url !== "string") return null;
-        const parts = url.split("/");
-        const potentialId = parts.pop();
-        return potentialId && potentialId.length > 0 ? potentialId : null;
-      };
-
-      const formatPrice = (price) => {
-        if (typeof price !== "number") return "N/A";
-        return `${price.toFixed(0)}₴`;
-      };
-
-      const processedMovieData = {
-        id: foundMovie.id,
-        title: foundMovie.title,
-        year: getYearFromDate(foundMovie.release_date),
-        ageRating: foundMovie.age,
-        duration: foundMovie.duration,
-        genres: foundMovie.genre,
-        description: foundMovie.description,
-        buyPrice: formatPrice(foundMovie.ticket_price),
-        rating: foundMovie.rating,
-        posterUrl: getAbsoluteImageUrl(foundMovie.poster),
-        heroImageUrl: getAbsoluteImageUrl(foundMovie.background_image),
-        trailerVideoId: getVideoIdFromUrl(foundMovie.trailer_url),
-        cast: actorDetails,
-      };
-
-      setCurrentMovieData(processedMovieData);
-    } else {
+        const processedMovieData = {
+          id: foundMovie.id,
+          title: foundMovie.title,
+          release_date: getYearFromDate(foundMovie.release_date),
+          age: foundMovie.age,
+          duration: foundMovie.duration,
+          genre: foundMovie.genre,
+          description: foundMovie.description,
+          ticket_price: foundMovie.ticket_price,
+          rating: foundMovie.rating,
+          poster: getAbsoluteImageUrl(foundMovie.poster),
+          background_image: getAbsoluteImageUrl(foundMovie.background_image),
+          trailerVideoId: getVideoIdFromUrl(foundMovie.trailer_url),
+          cast: actorDetails,
+        };
+        console.log(processedMovieData);
+        setCurrentMovieData(processedMovieData);
+      } else {
         const deletedMovies = JSON.parse(
           localStorage.getItem("deletedMovies") || "[]"
         );
         if (!deletedMovies.includes(movieId)) {
           setError(`Film with ID "${movieId}" not found.`);
         }
-    }
+      }
+    };
+
+    loadMovie();
 
     setIsLoading(false);
+
+    const handleMoviesUpdate = (event) => {
+      const { updatedMovie, mode, deletedMovieId } = event.detail;
+      if (mode === "edit" && updatedMovie && updatedMovie.id === movieId) {
+        setMovieStorage(updatedMovie);
+      }
+    };
+
+    document.addEventListener("moviesUpdated", handleMoviesUpdate);
+
+    return () => {
+      document.removeEventListener("moviesUpdated", handleMoviesUpdate);
+    };
   }, [movieId]);
 
   const handleSessionsClick = () => {
@@ -159,7 +174,9 @@ const MovieDetailsPage = () => {
   };
 
   const handleScheduleUpdate = (updatedSchedule) => {
-    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    const allSchedules = JSON.parse(
+      localStorage.getItem("allSchedules") || "[]"
+    );
     const otherSchedules = allSchedules.filter(
       (item) => item.film_id !== movieId
     );
@@ -178,20 +195,6 @@ const MovieDetailsPage = () => {
     }
     window.location.href = "/";
   };
-
-    const handleMoviesUpdate = (event) => {
-      const { updatedMovie, mode, deletedMovieId } = event.detail;
-      if (mode === "edit" && updatedMovie && updatedMovie.id === movieId) {
-        setMovieStorage(updatedMovie);
-      }
-    };
-
-    document.addEventListener("moviesUpdated", handleMoviesUpdate);
-
-    return () => {
-      document.removeEventListener("moviesUpdated", handleMoviesUpdate);
-    };
-  }, [movieId]);
 
   const handleEditMovie = () => {
     openForm("edit", currentMovieData);
