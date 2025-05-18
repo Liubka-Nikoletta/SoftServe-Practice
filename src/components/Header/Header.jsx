@@ -83,7 +83,7 @@ const Header = () => {
             genre.toLowerCase().includes(searchTerm.toLowerCase())
           )
       )
-      .slice(0, 32);
+      .slice(0, 5);
 
     setSuggestions(filteredMovies);
   }, [searchTerm, movies]);
