@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import allMoviesData from "../../../assets/films.json";
 import allComingSoonMoviesData from "../../../assets/coming_soon.json";
 import allActorsData from "../../../assets/actors.json";
 
@@ -9,6 +8,8 @@ import MovieHero from "./components/MovieHero/MovieHero";
 import TrailerSection from "./components/TrailerSection/TrailerSection";
 import ActorCarousel from "./components/ActorCarousel/ActorCarousel";
 import "./MovieDetailsPage.css";
+import SessionsSidebar from "./components/SessionsSidebar/SessionsSidebar";
+import { useForm } from "../../../context/FormProvider.jsx";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -18,17 +19,40 @@ const MovieDetailsPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getInitialFavoriteState = () => {
+  const [isFavorite, setIsFavorite] = useState(() => {
     const storedValue = localStorage.getItem(localStorageKey);
     return storedValue === "true";
-  };
+  });
 
-  const [isFavorite, setIsFavorite] = useState(getInitialFavoriteState);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [scheduleData, setScheduleData] = useState([]);
+
+  const { openForm } = useForm();
+
+  useEffect(() => {
+    const deletedMovies = JSON.parse(
+      localStorage.getItem("deletedMovies") || "[]"
+    );
+    if (deletedMovies.includes(movieId)) {
+      window.location.href = "/"; // redirect if deleted
+    }
+  }, [movieId]);
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, String(isFavorite));
   }, [isFavorite, localStorageKey]);
 
+    useEffect(() => {
+    const loadFilteredSchedule = () => {
+      const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+      const filteredSchedule = allSchedules.filter(
+        (item) => item.film_id === movieId
+      );
+      setScheduleData(filteredSchedule);
+    };
+    loadFilteredSchedule();
+  
   const getAbsoluteImageUrl = (relativePath) => {
     if (!relativePath) return '';
 
@@ -44,7 +68,9 @@ const MovieDetailsPage = () => {
     setError(null);
     setCurrentMovieData(null);
 
-    let foundMovie = allMoviesData.find((movie) => movie.id === movieId);
+    const moviesFromStorage = localStorage.getItem("currentlyPlaying");
+    const parsedMovies = JSON.parse(moviesFromStorage) || [];
+    let foundMovie = parsedMovies.find((m) => m.id === movieId);
 
     if (!foundMovie) {
       foundMovie = allComingSoonMoviesData.find(
@@ -109,18 +135,66 @@ const MovieDetailsPage = () => {
 
       setCurrentMovieData(processedMovieData);
     } else {
-      setError(`Film with ID "${movieId}" not found.`);
+        const deletedMovies = JSON.parse(
+          localStorage.getItem("deletedMovies") || "[]"
+        );
+        if (!deletedMovies.includes(movieId)) {
+          setError(`Film with ID "${movieId}" not found.`);
+        }
     }
 
     setIsLoading(false);
   }, [movieId]);
 
   const handleSessionsClick = () => {
-    console.log("Go to sessions for movie:", movieId);
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsSidebarOpen((prev) => !prev);
+      setIsClosing(false);
+    }, 300);
   };
 
   const handleFavoriteClick = () => {
-    setIsFavorite((currentIsFavorite) => !currentIsFavorite);
+    setIsFavorite((prev) => !prev);
+  };
+
+  const handleScheduleUpdate = (updatedSchedule) => {
+    const allSchedules = JSON.parse(localStorage.getItem("allSchedules") || "[]");
+    const otherSchedules = allSchedules.filter(
+      (item) => item.film_id !== movieId
+    );
+    const newAllSchedules = [...otherSchedules, ...updatedSchedule];
+    localStorage.setItem("allSchedules", JSON.stringify(newAllSchedules));
+    setScheduleData(updatedSchedule);
+  };
+
+  const handleDeleteMovie = (id) => {
+    const deletedMovies = JSON.parse(
+      localStorage.getItem("deletedMovies") || "[]"
+    );
+    if (!deletedMovies.includes(id)) {
+      deletedMovies.push(id);
+      localStorage.setItem("deletedMovies", JSON.stringify(deletedMovies));
+    }
+    window.location.href = "/";
+  };
+
+    const handleMoviesUpdate = (event) => {
+      const { updatedMovie, mode, deletedMovieId } = event.detail;
+      if (mode === "edit" && updatedMovie && updatedMovie.id === movieId) {
+        setMovieStorage(updatedMovie);
+      }
+    };
+
+    document.addEventListener("moviesUpdated", handleMoviesUpdate);
+
+    return () => {
+      document.removeEventListener("moviesUpdated", handleMoviesUpdate);
+    };
+  }, [movieId]);
+
+  const handleEditMovie = () => {
+    openForm("edit", currentMovieData);
   };
 
   if (isLoading) {
@@ -141,11 +215,21 @@ const MovieDetailsPage = () => {
 
   return (
     <div className="movie-details-page">
+      <SessionsSidebar
+        isOpen={isSidebarOpen}
+        onClose={handleSessionsClick}
+        isClosing={isClosing}
+        schedule={scheduleData}
+        onScheduleUpdate={handleScheduleUpdate}
+        movieId={movieId} // Передаємо movieId в SessionsSidebar
+      />
       <MovieHero
         movie={currentMovieData}
         isFavorite={isFavorite}
         onSessionsClick={handleSessionsClick}
         onFavoriteClick={handleFavoriteClick}
+        onDeleteMovie={handleDeleteMovie}
+        onEditMovie={handleEditMovie}
       />
       {currentMovieData.trailerVideoId ? (
         <TrailerSection videoId={currentMovieData.trailerVideoId} />

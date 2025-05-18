@@ -152,3 +152,8 @@
 .fractional-star-container .filled-part > i.fas.fa-star {
   display: block;
 }
+
+.admin-movie-actions {
+  display: flex;
+  gap: 0.625rem;
+}
