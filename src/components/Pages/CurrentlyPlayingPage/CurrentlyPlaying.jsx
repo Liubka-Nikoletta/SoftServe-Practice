@@ -73,7 +73,19 @@ const CurrentlyPlaying = () => {
 
     loadData();
   }, []);
+  const handleDeleteMovie = (movieIdToDelete) => {
+    const updatedFilms = allCurrentlyPlayingFilms.filter(
+      (movie) => movie.id !== movieIdToDelete
+    );
+    setAllCurrentlyPlayingFilms(updatedFilms);
+    setDisplayedFilms(updatedFilms);
 
+    const deletedMovies = JSON.parse(localStorage.getItem("deletedMovies") || "[]");
+    if (!deletedMovies.includes(movieIdToDelete)) {
+      deletedMovies.push(movieIdToDelete);
+      localStorage.setItem("deletedMovies", JSON.stringify(deletedMovies));
+    }
+  };
   const handleFilterClick = () => {
     setIsFilterPanelOpen(true);
   };
@@ -207,6 +219,7 @@ const CurrentlyPlaying = () => {
               ageRating={movie.age}
               posterUrl={movie.poster}
               rating={movie.rating}
+              onDelete={handleDeleteMovie} 
             />
           ))}
         </div>

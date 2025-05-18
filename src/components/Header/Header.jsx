@@ -40,14 +40,23 @@ const Header = () => {
   useEffect(() => {
     const loadMovies = async () => {
       try {
-        const currentMovies =
-          (await import("../../assets/films.json")).default || [];
-        const upcomingMovies =
-          (await import("../../assets/coming_soon.json")).default || [];
+        const currentlyPlayingString = localStorage.getItem("currentlyPlaying");
+        const currentlyPlayingMovies = currentlyPlayingString ? JSON.parse(currentlyPlayingString) : [];
 
-        setMovies([...currentMovies, ...upcomingMovies]);
+        const comingSoonString = localStorage.getItem("comingSoon");
+        const comingSoonMovies = comingSoonString ? JSON.parse(comingSoonString) : [];
+
+        const deletedMoviesString = localStorage.getItem("deletedMovies");
+        const deletedMovies = deletedMoviesString ? JSON.parse(deletedMoviesString) : [];
+
+        const allMovies = [...currentlyPlayingMovies, ...comingSoonMovies];
+        const filteredMovies = allMovies.filter(
+          (movie) => !deletedMovies.some((deletedId) => deletedId === movie.id)
+        );
+
+        setMovies(filteredMovies);
       } catch (error) {
-        console.error("Error loading movie data for search:", error);
+        console.error("Error loading movie data from localStorage for search:", error);
         setMovies([]);
       }
     };
@@ -61,16 +70,20 @@ const Header = () => {
       return;
     }
 
+    const normalizeGenre = (movie) => {
+      return Array.isArray(movie.genre) ? movie.genre : Object.values(movie.genre).filter(item => typeof item === 'string');
+    };
+
     const filteredMovies = movies
       .filter(
         (movie) =>
           movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          movie.rating.toString().includes(searchTerm) ||
-          movie.genre.some((genre) =>
+          (movie.rating && movie.rating.toString().includes(searchTerm)) ||
+          normalizeGenre(movie).some((genre) =>
             genre.toLowerCase().includes(searchTerm.toLowerCase())
           )
       )
-      .slice(0, 5);
+      .slice(0, 32);
 
     setSuggestions(filteredMovies);
   }, [searchTerm, movies]);

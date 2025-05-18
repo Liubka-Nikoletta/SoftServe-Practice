@@ -99,6 +99,36 @@ const FavouritePage = () => {
     setIsFilterPanelOpen(false);
   };
 
+  const handleDeleteMovie = (movieIdToDelete) => {
+    const updatedFavourites = allFavouriteFilms.filter(
+      (movie) => movie.id !== movieIdToDelete
+    );
+    setAllFavouriteFilms(updatedFavourites);
+    setDisplayedFilms(updatedFavourites);
+
+    const deletedMovies = JSON.parse(localStorage.getItem("deletedMovies") || "[]");
+    if (!deletedMovies.includes(movieIdToDelete)) {
+      deletedMovies.push(movieIdToDelete);
+      localStorage.setItem("deletedMovies", JSON.stringify(deletedMovies));
+    }
+    const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
+    if (storedCurrentlyPlaying) {
+      const updatedCurrentlyPlaying = JSON.parse(storedCurrentlyPlaying).filter(
+        (movie) => movie.id !== movieIdToDelete
+      );
+      localStorage.setItem("currentlyPlaying", JSON.stringify(updatedCurrentlyPlaying));
+    }
+
+    const storedComingSoon = localStorage.getItem("comingSoon");
+    if (storedComingSoon) {
+      const updatedComingSoon = JSON.parse(storedComingSoon).filter(
+        (movie) => movie.id !== movieIdToDelete
+      );
+      localStorage.setItem("comingSoon", JSON.stringify(updatedComingSoon));
+    }
+  };
+
+  
   const handleFilterChange = useCallback((filters) => {
     console.log("Застосовані фільтри в FavouritesPage:", filters);
     let filteredMovies = [...allFavouriteFilms];
@@ -225,6 +255,7 @@ const FavouritePage = () => {
               ageRating={movie.age}
               posterUrl={movie.poster}
               rating={movie.rating}
+              onDelete={handleDeleteMovie}
             />
           ))}
         </div>
