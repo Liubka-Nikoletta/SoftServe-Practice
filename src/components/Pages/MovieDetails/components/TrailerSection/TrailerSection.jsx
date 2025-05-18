@@ -2,7 +2,6 @@ import React from "react";
 import "./TrailerSection.css";
 
 const TrailerSection = ({ videoId }) => {
-  const videoAvailable = Boolean(videoId);
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
   return (

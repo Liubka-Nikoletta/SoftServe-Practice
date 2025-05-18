@@ -1,4 +1,7 @@
 .actor-carousel-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   justify-content: left;
@@ -54,5 +57,8 @@
 
 .carousel-title {
   font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 25px;
+  padding-bottom: 5px;
   color: #8b2635;
 }
