@@ -113,21 +113,6 @@ const FavouritePage = () => {
       deletedMovies.push(movieIdToDelete);
       localStorage.setItem("deletedMovies", JSON.stringify(deletedMovies));
     }
-    const storedCurrentlyPlaying = localStorage.getItem("currentlyPlaying");
-    if (storedCurrentlyPlaying) {
-      const updatedCurrentlyPlaying = JSON.parse(storedCurrentlyPlaying).filter(
-        (movie) => movie.id !== movieIdToDelete
-      );
-      localStorage.setItem("currentlyPlaying", JSON.stringify(updatedCurrentlyPlaying));
-    }
-
-    const storedComingSoon = localStorage.getItem("comingSoon");
-    if (storedComingSoon) {
-      const updatedComingSoon = JSON.parse(storedComingSoon).filter(
-        (movie) => movie.id !== movieIdToDelete
-      );
-      localStorage.setItem("comingSoon", JSON.stringify(updatedComingSoon));
-    }
   };
 
   
