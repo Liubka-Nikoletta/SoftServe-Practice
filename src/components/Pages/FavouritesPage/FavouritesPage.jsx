@@ -3,6 +3,7 @@ import './FavouritesPage.css';
 import MovieCard from "../../MovieCard/MovieCard.jsx";
 import FilterButton from "../../FilterButton/FilterButton";
 import FilterPanel from "../../FilterPanel/FilterPanel";
+import { useForm } from "../../../context/FormProvider.jsx";
 
 const TODAY_AT_MIDNIGHT = new Date();
 TODAY_AT_MIDNIGHT.setHours(0, 0, 0, 0);
@@ -34,6 +35,7 @@ const FavouritePage = () => {
   const [error, setError] = useState(null);
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [schedules, setSchedules] = useState([]);
+    const { openForm } = useForm();
 
   const loadFavouriteMovies = useCallback(() => {
     setLoading(true);
@@ -256,6 +258,7 @@ const FavouritePage = () => {
               posterUrl={movie.poster}
               rating={movie.rating}
               onDelete={handleDeleteMovie}
+              onEdit={() => openForm("edit", movie)}
             />
           ))}
         </div>
