@@ -15,6 +15,21 @@ const MainPage = () => {
   const [favoriteFilms, setFavoriteFilms] = useState([]);
   const [allSchedules, setAllSchedules] = useState([]);
 
+  const loadActorData = async () => {
+    const storedActors = localStorage.getItem("allActors");
+    if (!storedActors) {
+      try {
+        const actorsModule = await import("../../../assets/actors.json");
+        localStorage.setItem("allActors", JSON.stringify(actorsModule.default));
+        console.log("[MainPage.jsx] Actors loaded from JSON and saved to localStorage");
+      } catch (error) {
+        console.error("Error loading actors from JSON", error);
+      }
+    } else {
+      console.log("[MainPage.jsx] Actors data already in localStorage");
+    }
+  };
+
   const loadMovieData = async () => {
     console.log("[MainPage.jsx] loadMovieData called");
     const deletedMovies = JSON.parse(
@@ -110,6 +125,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
+    loadActorData(); // Завантажуємо дані акторів
     loadMovieData();
     loadScheduleData(); // Завантаження даних про сесії
 

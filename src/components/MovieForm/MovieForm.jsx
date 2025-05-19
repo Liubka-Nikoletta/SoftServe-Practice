@@ -35,27 +35,14 @@ const ageRatingOptions = [
 ];
 
 const availableGenres = [
-  "Бойовик",
-  "Детектив",
-  "Драма",
-  "Жахи",
-  "Комедія",
-  "Кримінал",
-  "Кримінальний",
-  "Мелодрама",
-  "Містика",
-  "Пригоди",
-  "Психологічний",
-  "Романтика",
-  "Сімейний",
-  "Супергеройський фільм",
-  "Трилер",
-  "Фантастика",
-  "Фентезі",
+  "Бойовик", "Детектив", "Драма", "Жахи", "Комедія", "Кримінал", 
+  "Кримінальний", "Мелодрама", "Містика", "Пригоди", "Психологічний", 
+  "Романтика", "Сімейний", "Супергеройський фільм", "Трилер", 
+  "Фантастика", "Фентезі",
 ].sort();
 
 const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
-  if (!isOpen) {
+  if (!isOpen || (mode !== "add" && mode !== "edit")) {
     return null;
   }
 
@@ -68,7 +55,7 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
   const [releaseDate, setReleaseDate] = useState("");
   const [duration, setDuration] = useState("");
   const [trailerUrl, setTrailerUrl] = useState("");
-  const [actors, setActors] = useState("");
+  const [actors, setActors] = useState(""); 
   const [ticketPrice, setTicketPrice] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("");
   const [errors, setErrors] = useState({});
@@ -88,7 +75,7 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
       setReleaseDate(formatDateToInput(initialData.release_date || ""));
       setDuration(initialData.duration || "");
       setTrailerUrl(initialData.trailer_url || "");
-      setActors(initialData.actors ? initialData.actors.join(", ") : "");
+      setActors(initialData.actors ? initialData.actors.join(", ") : ""); 
       setTicketPrice(String(initialData.ticket_price || ""));
       setBackgroundImage(initialData.background_image || "");
     } else {
@@ -149,6 +136,7 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
     }
     if (!backgroundImage.trim())
       newErrors.backgroundImage = "Background image URL is required";
+  
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -169,7 +157,7 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
         trailer_url: trailerUrl,
         ticket_price: parseFloat(ticketPrice),
         background_image: backgroundImage,
-        actors: initialData?.actors || [],
+        actors: initialData?.actors || [], 
       };
       if (mode === "edit" && initialData && initialData.id) {
         movieData.id = initialData.id;
@@ -183,7 +171,7 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
       <div className="movie-form" onClick={(e) => e.stopPropagation()}>
         <div className="movie-form__header">
           <h2 className="movie-form__title">
-            {mode === "add" ? "Add New" : "Edit"} Movie
+            {mode === "add" ? "Add New" : "Edit"} Movie 
           </h2>
           <Button icon="fa-close" size="small" onClick={onClose} />
         </div>
@@ -226,7 +214,6 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
               errorMessage={errors.duration}
               isRequired
             />
-
             <StarRating
               maxRating={10}
               rating={rating}
@@ -241,7 +228,7 @@ const MovieForm = ({ onClose, onSubmit, mode, initialData, isOpen }) => {
               placeholder="e.g., 150"
               errorMessage={errors.ticketPrice}
               isRequired
-              min="0.01"
+              min="0.01" 
               step="any"
             />
           </div>
