@@ -127,7 +127,7 @@
   font-size: 18px;
   margin: 0 1px;
   position: relative;
-  color: #ffffff;
+  color: #fff;
 }
 
 .fractional-star-container {
@@ -135,22 +135,14 @@
   display: inline-block;
 }
 
-.fractional-star-container > i.far.fa-star {
-  display: block;
-}
-
 .fractional-star-container .filled-part {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  overflow: hidden;
-  display: block;
   z-index: 1;
-}
-
-.fractional-star-container .filled-part > i.fas.fa-star {
-  display: block;
+  color: #fff;
+  width: 100%;
 }
 
 .admin-movie-actions {

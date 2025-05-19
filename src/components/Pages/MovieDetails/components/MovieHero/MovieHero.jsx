@@ -11,9 +11,8 @@ const HEART_REGULAR = "far fa-heart";
 const renderStars = (ratingValue) => {
   const stars = [];
   const totalStars = 10;
-  const scaledRating = Math.max(0, Math.min(10, Number(ratingValue) || 0));
-  const fullStars = Math.floor(scaledRating);
-  const fractionalPart = scaledRating % 1;
+  const fullStars = Math.floor(ratingValue);
+  const fractionalPart = ratingValue % 1;
 
   for (let i = 0; i < fullStars; i++) {
     stars.push(
@@ -29,9 +28,14 @@ const renderStars = (ratingValue) => {
         key="star-fractional"
         className="fractional-star-container rating-star"
       >
-        <i className={STAR_REGULAR}></i>
-        <div className="filled-part" style={{ width: `${fillPercentage}%` }}>
-          <i className={STAR_SOLID}></i>
+        <i className={STAR_REGULAR} style={{ display: "block" }}></i>
+        <div
+          className="filled-part"
+          style={{
+            clipPath: `inset(0 ${100 - fillPercentage}% 0 0)`,
+          }}
+        >
+          <i className={STAR_SOLID} style={{ display: "block" }}></i>{" "}
         </div>
       </div>
     );
