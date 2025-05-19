@@ -31,7 +31,6 @@ const UserIcon = () => {
 
     const handleLogout = (e) => {
         e.preventDefault();
-
         localStorage.removeItem('currentUser');
         document.dispatchEvent(new CustomEvent('authStatusChanged'));
         navigate('/login');
@@ -39,12 +38,10 @@ const UserIcon = () => {
 
     const handleMouseLeave = (e) => {
         if (!containerRef.current) return;
-
         const related = e.relatedTarget;
         if (related && containerRef.current.contains(related)) {
             return;
         }
-
         setShowDropdown(false);
     };
 
@@ -55,49 +52,34 @@ const UserIcon = () => {
             onMouseEnter={() => setShowDropdown(true)}
             onMouseLeave={handleMouseLeave}
         >
-            {isLoggedIn ? (
-                <>
-                    <button
-                        className="user-button"
-                        aria-label="User menu"
-                    >
-                        <i className="fa-solid fa-user"></i>
-                    </button>
+            <button className="user-button" aria-label="User menu">
+                <i className="fa-solid fa-user"></i>
+            </button>
 
-                    {showDropdown && (
-                        <div className="user-dropdown">
+            {showDropdown && (
+                <div className="user-dropdown">
+                    {isLoggedIn ? (
+                        <>
                             <div className="user-dropdown-header">
                                 <span className="user-name">{userName}</span>
                             </div>
                             <div className="user-dropdown-menu">
-                                <Link
-                                    to="/profile"
-                                    className="dropdown-item"
-                                    onClick={() => setShowDropdown(false)}
-                                >
-                                    My Profile
-                                </Link>
-                                <Link
-                                    to="/tickets"
-                                    className="dropdown-item"
-                                    onClick={() => setShowDropdown(false)}
-                                >
-                                    My Tickets
-                                </Link>
-                                <button
-                                    className="dropdown-item logout"
-                                    onClick={handleLogout}
-                                >
+                                <button className="dropdown-item logout" onClick={handleLogout}>
                                     Sign Out
                                 </button>
                             </div>
+                        </>
+                    ) : (
+                        <div className="user-dropdown-menu">
+                            <button
+                                className="dropdown-item"
+                                onClick={() => navigate('/login')}
+                            >
+                                Login
+                            </button>
                         </div>
                     )}
-                </>
-            ) : (
-                <Link to="/login" className="login-button">
-                    <i className="fa-solid fa-user"></i>
-                </Link>
+                </div>
             )}
         </div>
     );
