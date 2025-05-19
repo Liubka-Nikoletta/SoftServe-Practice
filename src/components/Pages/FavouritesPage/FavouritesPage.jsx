@@ -3,6 +3,7 @@ import './FavouritesPage.css';
 import MovieCard from "../../MovieCard/MovieCard.jsx";
 import FilterButton from "../../FilterButton/FilterButton";
 import FilterPanel from "../../FilterPanel/FilterPanel";
+import { useForm } from "../../../context/FormProvider.jsx";
 
 const TODAY_AT_MIDNIGHT = new Date();
 TODAY_AT_MIDNIGHT.setHours(0, 0, 0, 0);
@@ -34,6 +35,7 @@ const FavouritePage = () => {
   const [error, setError] = useState(null);
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [schedules, setSchedules] = useState([]);
+    const { openForm } = useForm();
 
   const loadFavouriteMovies = useCallback(() => {
     setLoading(true);
@@ -99,6 +101,21 @@ const FavouritePage = () => {
     setIsFilterPanelOpen(false);
   };
 
+  const handleDeleteMovie = (movieIdToDelete) => {
+    const updatedFavourites = allFavouriteFilms.filter(
+      (movie) => movie.id !== movieIdToDelete
+    );
+    setAllFavouriteFilms(updatedFavourites);
+    setDisplayedFilms(updatedFavourites);
+
+    const deletedMovies = JSON.parse(localStorage.getItem("deletedMovies") || "[]");
+    if (!deletedMovies.includes(movieIdToDelete)) {
+      deletedMovies.push(movieIdToDelete);
+      localStorage.setItem("deletedMovies", JSON.stringify(deletedMovies));
+    }
+  };
+
+  
   const handleFilterChange = useCallback((filters) => {
     console.log("Застосовані фільтри в FavouritesPage:", filters);
     let filteredMovies = [...allFavouriteFilms];
@@ -225,6 +242,8 @@ const FavouritePage = () => {
               ageRating={movie.age}
               posterUrl={movie.poster}
               rating={movie.rating}
+              onDelete={handleDeleteMovie}
+              onEdit={() => openForm("edit", movie)}
             />
           ))}
         </div>

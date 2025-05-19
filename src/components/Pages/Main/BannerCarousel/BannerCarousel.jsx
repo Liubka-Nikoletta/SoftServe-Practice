@@ -61,7 +61,7 @@ const BannerCarousel = ({ films }) => {
         </div>
         <p>{currentFilm.description}</p>
         <div className="hero-buttons">
-          <Button text="Детально" onClick={handleDetailsClick} size="medium" />
+          <Button text="Details" onClick={handleDetailsClick} size="medium" />
           <Button
             icon={isLiked ? "fa-solid fa-heart" : "fa-regular fa-heart"}
             onClick={toggleLike}
