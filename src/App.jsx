@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Form } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import FavouritesPage from "./components/Pages/FavouritesPage/FavouritesPage.jsx";
@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { FormProvider, useForm } from "./context/FormProvider.jsx";
 import { ToastContainer } from "react-toastify";
 import MovieForm from "./components/MovieForm/MovieForm.jsx";
+
+import AddActorForm from "./components/Form/AddActorForm/AddActorForm.jsx";
 
 import "./App.css";
 
@@ -34,12 +36,12 @@ function AppContent() {
       formData
     );
 
-    let moviesFromStorageKey = "currentlyPlaying";
+    let moviesFromStorageKey = "currentlyPlaying"; 
 
     let parsedMovies = [];
     try {
       const moviesFromStorage = localStorage.getItem(moviesFromStorageKey);
-      console.log("[App.jsx] moviesFromStorage string:", moviesFromStorage);
+       console.log("[App.jsx] moviesFromStorage string:", moviesFromStorage);
       if (moviesFromStorage) {
         parsedMovies = JSON.parse(moviesFromStorage);
       }
@@ -53,28 +55,33 @@ function AppContent() {
     if (formMode === "add") {
       movieThatWasUpdatedOrAdded = {
         ...formData,
+        actors: formData.actors || [], 
         id: `f_${new Date().getTime()}`,
       };
       parsedMovies.push(movieThatWasUpdatedOrAdded);
-      console.log("[App.jsx] Adding new movie:", movieThatWasUpdatedOrAdded);
+       console.log("[App.jsx] Adding new movie:", movieThatWasUpdatedOrAdded);
     } else if (formMode === "edit" && formData.id) {
       parsedMovies = parsedMovies.map((movie) => {
         if (movie.id === formData.id) {
-          movieThatWasUpdatedOrAdded = { ...movie, ...formData };
-          console.log(
-            "[App.jsx] Updating existing movie:",
-            movieThatWasUpdatedOrAdded
-          );
+          movieThatWasUpdatedOrAdded = { 
+            ...movie, 
+            ...formData,
+            actors: formData.actors || movie.actors || [],
+          };
+           console.log(
+             "[App.jsx] Updating existing movie:",
+             movieThatWasUpdatedOrAdded
+           );
           return movieThatWasUpdatedOrAdded;
         }
         return movie;
       });
     }
 
-    console.log(
-      "[App.jsx] After mode processing, movieThatWasUpdatedOrAdded is:",
-      movieThatWasUpdatedOrAdded
-    );
+     console.log(
+       "[App.jsx] After mode processing, movieThatWasUpdatedOrAdded is:",
+       movieThatWasUpdatedOrAdded
+     );
 
     if (movieThatWasUpdatedOrAdded) {
       try {
@@ -82,9 +89,9 @@ function AppContent() {
           moviesFromStorageKey,
           JSON.stringify(parsedMovies)
         );
-        console.log(
-          `[App.jsx] Movies saved to localStorage key "${moviesFromStorageKey}".`
-        );
+         console.log(
+           `[App.jsx] Movies saved to localStorage key "${moviesFromStorageKey}".`
+         );
 
         const event = new CustomEvent("moviesUpdated", {
           detail: {
@@ -93,23 +100,24 @@ function AppContent() {
           },
         });
         document.dispatchEvent(event);
-        console.log(
-          "[App.jsx] 'moviesUpdated' event dispatched with mode:",
-          formMode,
-          "and movie:",
+         console.log(
+           "[App.jsx] 'moviesUpdated' event dispatched with mode:",
+           formMode,
+           "and movie:",
           movieThatWasUpdatedOrAdded
-        );
+         );
       } catch (error) {
         console.error("Error saving movies to localStorage:", error);
       }
     } else {
-      console.log(
-        "[App.jsx] No movie was updated or added, localStorage not changed."
-      );
+       console.log(
+         "[App.jsx] No movie was updated or added, localStorage not changed."
+       );
     }
 
     closeForm();
-    console.log("[App.jsx] Form closed.");
+     console.log("[App.jsx] Form closed.");
+
   };
 
   return (
@@ -120,7 +128,6 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/favorites" element={<FavouritesPage />} />
-            <Route path="/movie" element={<MovieDetailsPage />} />
             <Route path="/movie/:movieId" element={<MovieDetailsPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/now-playing" element={<CurrentlyPlaying />} />
@@ -130,10 +137,18 @@ function AppContent() {
         <MovieForm
           isOpen={isFormOpen}
           onClose={closeForm}
-          mode={formMode}
+          mode={formMode} 
           initialData={currentEditingSession}
           onSubmit={handleMovieSubmit}
         />
+        <AddActorForm
+          isOpen={isFormOpen}
+          mode={formMode}
+          initialMovieId={formMode === 'addActor' ? currentEditingSession?.movieId : null}
+          initialActorData={formMode === 'editActor' ? currentEditingSession?.actorData : null}
+          onClose={closeForm}
+        />
+
         <ToastContainer
           position="top-center"
           autoClose={3000}
@@ -144,7 +159,7 @@ function AppContent() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="light"
+          theme="light" 
         />
       </div>
     </Router>

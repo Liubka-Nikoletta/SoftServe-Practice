@@ -1,0 +1,118 @@
+.add-actor-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.add-actor-form-panel {
+  background-color: #fff;
+  padding: 1.25rem 1.875rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  position: fixed;
+  z-index: 1001;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 43.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-height: none;
+  overflow: visible;
+}
+
+.add-actor-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.add-actor-form-header h2 {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 500;
+  color: #8b2635;
+}
+
+.close-button {
+  background: rgba(0, 0, 0, 0.15);
+  border: none;
+  color: #000;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 4px 10px;
+  line-height: 1;
+  border-radius: 8px;
+}
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.add-actor-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.62rem;
+}
+
+.add-actor-form-columns {
+  display: flex;
+  gap: 0.625rem;
+  width: 100%;
+}
+
+.add-actor-form-columns .form-field {
+  align-self: stretch;
+  width: 90%;
+}
+
+.add-actor-form-content .form-field__label {
+  display: block;
+  margin-bottom: 0.3125rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.add-actor-form-content .form-field__input::placeholder,
+.add-actor-form-content .form-field__textarea::placeholder {
+  color: #999;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+}
+.form-actions .form-submit__button {
+  padding: 0.625rem 1.25rem;
+  background-color: #8b2635;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.form-actions .form-submit__button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.form-actions .form-submit__button:hover:not(:disabled) {
+  background-color: #a73344;
+}
+
+.form-field__error.main-error {
+  text-align: left;
+  color: #dc3545;
+  margin-top: 0.3125rem;
+  font-size: 0.875rem;
+}

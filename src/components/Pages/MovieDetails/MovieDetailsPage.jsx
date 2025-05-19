@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import allComingSoonMoviesData from "../../../assets/coming_soon.json";
-import allActorsData from "../../../assets/actors.json";
+import allActorsData from "../../../assets/actors.json"; // Залишаємо імпорт як резерв
 
 import MovieHero from "./components/MovieHero/MovieHero";
 import TrailerSection from "./components/TrailerSection/TrailerSection";
@@ -52,7 +52,7 @@ const MovieDetailsPage = () => {
       localStorage.getItem("deletedMovies") || "[]"
     );
     if (deletedMovies.includes(movieId)) {
-      window.location.href = "/"; // redirect if deleted
+      window.location.href = "/";
     }
   }, [movieId]);
 
@@ -76,23 +76,38 @@ const MovieDetailsPage = () => {
   useEffect(() => {
     setIsLoading(true);
     setError(null);
-    setCurrentMovieData(null);
 
-    const loadMovie = () => {
+    const loadMovieAndProcessActors = () => {
       const moviesFromStorage = localStorage.getItem("currentlyPlaying");
       const parsedMovies = JSON.parse(moviesFromStorage) || [];
       let foundMovie = parsedMovies.find((m) => m.id === movieId);
 
       if (!foundMovie) {
-        foundMovie = allComingSoonMoviesData.find(
-          (movie) => movie.id === movieId
-        );
+        const comingSoonMoviesString = localStorage.getItem("comingSoon");
+        if (comingSoonMoviesString) {
+          const parsedComingSoonMovies = JSON.parse(comingSoonMoviesString) || [];
+          foundMovie = parsedComingSoonMovies.find(movie => movie.id === movieId);
+        }
+        if (!foundMovie) {
+          foundMovie = allComingSoonMoviesData.find(movie => movie.id === movieId);
+        }
       }
 
       if (foundMovie) {
-        const actorDetails = foundMovie.actors
+        const storedActors = localStorage.getItem("allActors");
+        let parsedActorsFromStorage = [];
+        try {
+          if(storedActors) parsedActorsFromStorage = JSON.parse(storedActors);
+        } catch (e) {
+          console.error("Error parsing allActors from localStorage", e);
+        }
+
+        const deletedActorIds = JSON.parse(localStorage.getItem("deletedActors") || "[]");
+
+        const actorDetails = (foundMovie.actors || [])
+          .filter(actorId => !deletedActorIds.includes(actorId))
           .map((actorId) => {
-            const foundActor = allActorsData.find(
+            const foundActor = parsedActorsFromStorage.find(
               (actor) => actor.id === actorId
             );
             if (foundActor) {
@@ -104,7 +119,7 @@ const MovieDetailsPage = () => {
               };
             }
             console.warn(
-              `Actor with ID "${actorId}" referenced in movie "${foundMovie.title}" not found in actors.json`
+              `Actor with ID "${actorId}" referenced in movie "${foundMovie.title}" not found.`
             );
             return null;
           })
@@ -124,34 +139,38 @@ const MovieDetailsPage = () => {
           background_image: getAbsoluteImageUrl(foundMovie.background_image),
           trailer_url: foundMovie.trailer_url,
           cast: actorDetails,
+          actors: foundMovie.actors,
         };
-        console.log(processedMovieData);
         setCurrentMovieData(processedMovieData);
       } else {
-        const deletedMovies = JSON.parse(
-          localStorage.getItem("deletedMovies") || "[]"
-        );
+        const deletedMovies = JSON.parse(localStorage.getItem("deletedMovies") || "[]");
         if (!deletedMovies.includes(movieId)) {
           setError(`Film with ID "${movieId}" not found.`);
         }
       }
+      setIsLoading(false);
     };
 
-    loadMovie();
-
-    setIsLoading(false);
+    loadMovieAndProcessActors();
 
     const handleMoviesUpdate = (event) => {
-      const { updatedMovie, mode, deletedMovieId } = event.detail;
+      const { updatedMovie, mode } = event.detail;
       if (mode === "edit" && updatedMovie && updatedMovie.id === movieId) {
-        setMovieStorage(updatedMovie);
+        loadMovieAndProcessActors();
       }
     };
 
+    const handleActorsUpdate = () => {
+      console.log("Actors updated event received, reloading movie details and cast.");
+      loadMovieAndProcessActors();
+    };
+
     document.addEventListener("moviesUpdated", handleMoviesUpdate);
+    document.addEventListener("actorsUpdated", handleActorsUpdate);
 
     return () => {
       document.removeEventListener("moviesUpdated", handleMoviesUpdate);
+      document.removeEventListener("actorsUpdated", handleActorsUpdate);
     };
   }, [movieId]);
 
@@ -218,7 +237,7 @@ const MovieDetailsPage = () => {
         isClosing={isClosing}
         schedule={scheduleData}
         onScheduleUpdate={handleScheduleUpdate}
-        movieId={movieId} // Передаємо movieId в SessionsSidebar
+        movieId={movieId}
       />
       <MovieHero
         movie={currentMovieData}
@@ -235,11 +254,8 @@ const MovieDetailsPage = () => {
       ) : (
         <p className="info">The trailer for this movie is not available.</p>
       )}
-      {currentMovieData.cast && currentMovieData.cast.length > 0 ? (
-        <ActorCarousel cast={currentMovieData.cast} />
-      ) : (
-        <p className="info">Cast information is not available.</p>
-      )}
+      <ActorCarousel cast={currentMovieData.cast || []} movieId={movieId} />
+
     </div>
   );
 };
