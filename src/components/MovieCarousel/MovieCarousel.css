@@ -1,0 +1,171 @@
+.movie-carousel-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-bottom: 60px; 
+}
+
+
+.carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5% 11% 0 11%;
+}
+
+.carousel-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #8b2635;
+    margin: 0;
+}
+
+
+.see-more-button {
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    color: #666;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.see-more-button:hover {
+    color: #8b2635;
+}
+
+.see-more-arrow {
+    margin-left: 5px;
+    font-size: 1.2rem;
+}
+
+.movie-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 20px;
+}
+
+.movie-cards-container {
+    display: flex;
+    overflow: hidden;
+    width: 80%;
+    gap: 20px; 
+    min-height: 400px; 
+}
+
+.carousel-btn {
+    position: absolute;
+    margin: 0 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 2;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.carousel-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
+.movie-card__container {
+    margin: 0;
+    flex: 0 0 auto;
+    width: calc(25% - 15px);
+}
+
+
+.movie-carousel-wrapper.currentlyPlaying .carousel-btn {
+    color: #9e1b39;
+}
+
+.movie-carousel-wrapper.currentlyPlaying .carousel-title,
+.movie-carousel-wrapper.currentlyPlaying .see-more-button:hover {
+    color: #9e1b39;
+}
+
+.movie-carousel-wrapper.comingSoon .carousel-btn {
+    color: #1b609e;
+}
+
+.movie-carousel-wrapper.comingSoon .carousel-title,
+.movie-carousel-wrapper.comingSoon .see-more-button:hover {
+    color: #1b609e;
+}
+
+.movie-carousel-wrapper.favourites .carousel-btn {
+    color: #9e1b85;
+}
+
+.movie-carousel-wrapper.favourites .carousel-title,
+.movie-carousel-wrapper.favourites .see-more-button:hover {
+    color: #9e1b85;
+}
+
+
+.movie-cards-container:empty::after {
+    content: 'Завантаження фільмів...';
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    color: #666;
+}
+
+@media (max-width: 1200px) {
+    .movie-card__container {
+        width: calc(33.33% - 13.33px);
+    }
+}
+
+@media (max-width: 900px) {
+    .movie-card__container {
+        width: calc(50% - 10px); 
+    }
+    
+    .carousel-header {
+        padding: 5% 5% 0 5%;
+    }
+}
+
+@media (max-width: 600px) {
+    .movie-card__container {
+        width: 100%; 
+    }
+    
+    .carousel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .see-more-button {
+        align-self: flex-end;
+    }
+}

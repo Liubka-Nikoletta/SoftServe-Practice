@@ -1,0 +1,32 @@
+.trailer-section {
+  max-width: 1200px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 0px;
+  box-sizing: border-box;
+}
+
+.trailer-section .section-title {
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 25px;
+  padding-bottom: 5px;
+  color: #8b2635;
+}
+
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: 8px;
+}
+
+.video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}

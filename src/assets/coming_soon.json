@@ -1,0 +1,89 @@
+[
+    {
+        "id": "f31",
+        "title": "Світ Юрського Періоду: Відродження",
+        "poster": "src/assets/posters/Jurastic.jpg",
+        "rating": 7.2,
+        "age": "16+",
+        "description": "Умови на планеті знову стали несприятливими для динозаврів...",
+        "genre": ["Пригоди", "Бойовик", "Фантастика"],
+        "release_date": "08.07.2025",
+        "duration": "2:14",
+        "trailer_url": "https://youtu.be/c89w69Ic_1k",
+        "actors": ["actor-143", "actor-144", "actor-145", "actor-146", "actor-147"],
+        "ticket_price": 170,
+        "background_image": "src/assets/posters/Jurastic_bg.jpg"
+    },
+    {
+        "id": "f32",
+        "title": "Спокута Гріхів",
+        "poster": "src/assets/posters/sinsFree.jpg",
+        "rating": 5.2,
+        "age": "18+",
+        "description": "Гангстер, про якого колись ходили легенди...",
+        "genre": ["Кримінальний", "Триллер", "Драма", "Детектив"],
+        "release_date": "12.07.2025",
+        "duration": "1:52",
+        "trailer_url": "https://youtu.be/_OOeL6IJyXY",
+        "actors": ["actor-148", "actor-149", "actor-150", "actor-151", "actor-152", "actor-153"],
+        "ticket_price": 180,
+        "background_image": "src/assets/posters/sinsFree_bg.jpg"
+    },
+    {
+        "id": "f33",
+        "title": "Супермен",
+        "poster": "src/assets/posters/Superman.jpg",
+        "rating": 7.6,
+        "age": "16+",
+        "description": "Біженець із планети Криптон Кларк Кент...",
+        "genre": ["Супергеройський фільм","Бойовик", "Пригоди", "Фантастика"],
+        "release_date": "10.07.2025",
+        "duration": "2:00",
+        "trailer_url": "https://youtu.be/NJVAVxnhPmE",
+        "actors": ["actor-154", "actor-155", "actor-156", "actor-157", "actor-158", "actor-159"],
+        "ticket_price": 210,
+        "background_image": "src/assets/posters/Superman_bg.jpg"
+    },
+    {
+        "id": "f34",
+        "title": "Життя Чака",
+        "poster": "src/assets/posters/ChackLife.jpg",
+        "rating": 8.7,
+        "age": "12+",
+        "description": "Після невдалих батьківських зборів...",
+        "genre": ["Драма", "Фантастика", "Фентезі"],
+        "release_date": "17.07.2025",
+        "duration": "1:50",
+        "trailer_url": "https://youtu.be/5YPJX8dbzHU",
+        "actors": ["actor-160", "actor-161", "actor-162", "actor-163", "actor-164"],
+        "ticket_price": 200,
+        "background_image": "src/assets/posters/ChackLife_bg.jpg"
+    },
+    {
+        "id": "f35",
+        "title": "Мікі 17",
+        "poster": "src/assets/posters/Mikki17.jpg",
+        "rating": 6.2,
+        "age": "16+",
+        "description": "Події розгортаються у майбутньому, коли людство опанувало нові технології та прагне заселити нові планети. Мікі Барнз (Роберт Паттінсон) добровільно записується бути в числі першовідкривачів, яким довіряють найнебезпечніші місії по освоєнню космосу. У випадку, якщо він гине, то для нього виготовляють нове тіло, зберігаючи при цьому більшість його спогадів. Після чергових виснажливих подвигів по підкоренню крижаного світу Ніфльхейм, сімнадцяте тіло Мікі виживає. Але на повернення Мікі-17 ніхто не очікував, тож в кімнаті на нього чекав Мікі-18, його нове тіло.",
+        "genre": [
+          "Комедія",
+          "Фентезі",
+          "Бойовик",
+          "Триллер",
+          "Пригоди"
+        ],
+        "release_date": "07.03.2025", 
+        "duration": "1:58",
+        "trailer_url": "https://youtu.be/tA1s65o_kYM",
+        "actors": [
+          "actor-36",
+          "actor-37",
+          "actor-38",
+          "actor-39",
+          "actor-40"
+        ],
+        "ticket_price": 150,
+        "background_image": "src/assets/posters/Mikki17_bg.jpg"
+      }
+]

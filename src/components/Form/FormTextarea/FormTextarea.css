@@ -1,0 +1,21 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.form-field__label {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1rem;
+}
+
+.form-field__textarea {
+  padding: 0.625rem 0.625rem !important;
+  height: 4rem !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  background: rgba(29, 29, 29, 0.15) !important;
+  width: auto !important;
+  font-family: inherit !important;
+}

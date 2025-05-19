@@ -1,0 +1,143 @@
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f8f8;
+    padding: 20px;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.login-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #8b2635;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.login-container .form-control,
+.login-container input[type="text"],
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    outline: none;
+    background-color: white;
+    box-shadow: none;
+    box-sizing: border-box;
+    height: auto;
+}
+
+.login-container .form-control:focus,
+.login-container input:focus {
+    border-color: #8b2635;
+    outline: none;
+    box-shadow: 0 0 5px rgba(139, 38, 53, 0.3);
+}
+
+.login-container .form-control:hover,
+.login-container input:hover {
+    box-shadow: 0 0 5px rgba(139, 38, 53, 0.3);
+}
+
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #8b2635;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #a53042;
+}
+
+.error-message {
+    background-color: #ffeeee;
+    color: #e74c3c;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.toggle-mode {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.toggle-mode p {
+    color: #666;
+    margin: 0;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: #8b2635;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin-left: 5px;
+    font-size: inherit;
+}
+
+.toggle-button:hover {
+    color: #a53042;
+}
+
+div[class*="activat"] {
+    display: none !important;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px;
+    }
+    
+    .login-container .form-control {
+        padding: 10px;
+    }
+    
+    .submit-button {
+        padding: 10px;
+    }
+}

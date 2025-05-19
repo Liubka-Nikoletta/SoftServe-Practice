@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "font-awesome": "^4.7.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.5.2",
+    "react-toastify": "^11.0.5",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

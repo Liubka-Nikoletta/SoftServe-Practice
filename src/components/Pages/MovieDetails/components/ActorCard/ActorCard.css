@@ -1,0 +1,29 @@
+.actor-card {
+  max-width: 198px;
+  text-align: left;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.actor-card:hover {
+  transform: translateY(-3px);
+}
+
+.actor-photo {
+  max-width: 136px;
+  height: 136px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.actor-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #8b2635;
+}
+
+.actor-character {
+  font-weight: bold;
+  color: gray;
+}

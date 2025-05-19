@@ -1,0 +1,93 @@
+.hero-carousel {
+    position: relative;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    color: white;
+    transition: background-image 0.8s ease-in-out;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 80px;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hero-content h1 {
+    font-size: 64px;
+}
+
+.hero-content p {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.hero-nav {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+}
+
+.hero-nav button {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    padding: 10px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s ease;
+}
+
+.hero-nav button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-title-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.hero-title-nav h1 {
+    font-size: 64px;
+    margin: 0;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 48px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #ccc;
+}
